@@ -1,13 +1,11 @@
 
 import style from './header.module.css';
-import { useState } from 'react';
-import { useEffect } from 'react';
 import axios from 'axios';
 import HeaderLoading from './headerLoading';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { Link, NavLink } from 'next';
 import useSWRInfinite from 'swr'
-import { Col, Row } from 'react-bootstrap';
+import { Grid } from '@mui/material';
 //import UserProfile from '../../containers/userProfile/userProfile';
 //import { calculateNewValue } from '@testing-library/user-event/dist/utils';
 const Header = (props) => {
@@ -19,27 +17,29 @@ const Header = (props) => {
     const logoutHandler=()=>{
         props.logout();
     }  
+   console.log(isLoading)
+   console.log(data)
     return (
         <header className={style.main} dir='rtl'>
             {isAuth?
-            <Row>
+            <Grid container>
             <div className={style.userProfile}>
-                <Col>
+                <Grid item >
                     <div style={{float:"right",width:"auto"}}><NavLink to="/userProfile"><i className="fa fa-user-circle-o" aria-hidden="true"></i></NavLink></div>
                     <p style={{float:"right",width:"auto"}}>سلام {user.userInf.name} عزیز </p>
-                </Col>
-                <Col>
+                </Grid>
+                <Grid item>
                     <div style={{textAlign:'left'}} >
                     <button style={{backgroundColor:"rgba(0, 0, 0, 0)",border:'none'}} onClick={logoutHandler}><i className="fa fa-power-off" aria-hidden="true"></i></button>
                     </div>                
-                </Col>
+                </Grid>
                 
             </div>
-            </Row>:<></>
+            </Grid>:<></>
             }
             <div className={style.top_menu}>
-                <Row>
-                    <Col sm={4}>
+                <Grid container>
+                    <Grid item sm={6}>
                     <div className={style.s1}>
                         <div className={style.socials}>
                             {isLoading?
@@ -54,8 +54,8 @@ const Header = (props) => {
                             </>}  
                         </div>
                     </div>
-                    </Col>
-                    <Col sm={6}>
+                    </Grid>
+                    <Grid item sm={6}>
                     <div className={style.s2}>
                         <div className={style.phone_number}>
                             <p> مشاوره رایگان تلفنی: </p>
@@ -75,27 +75,28 @@ const Header = (props) => {
                             
                         </div>
                     </div>
-                    </Col>
-                </Row>
+                    </Grid>
+                </Grid>
             </div>
-            <div className={[style.logo]}>
-                <Row>
-                <a href="#" className={[style.logo]}>
+            <Grid container className={style.logo}>
+                <div className={style.logo}>
+                
+                <a href="#" className={style.logo}>
                     <img className={style.logo_img} src={'/img/logo.png'}/>
                 </a>
-                </Row>
-            </div>
+                </div>
+            </Grid>
             {isLoading?
             <>
             <div className={style.small_screen}>
                 
-                    <Row>
+                    <Grid container>
                         <div className={style.socials}>
                             <HeaderLoading/>
                         </div>
-                    </Row>
-                    <Row>
-                    <div className={[style.s2]}>
+                    </Grid>
+                    <Grid container>
+                    <div className={style.s2}>
                         <div className={style.phone_number}>
                             <p> مشاوره رایگان تلفنی: </p>
                             <SkeletonTheme baseColor="#F3B40D" highlightColor="#444" width={50}>
@@ -103,7 +104,7 @@ const Header = (props) => {
                             </SkeletonTheme>
                         </div>
                     </div>
-                    </Row>
+                    </Grid>
                 
              </div>   
             
@@ -111,14 +112,14 @@ const Header = (props) => {
             </>:
             <>
             <div className={style.small_screen}>
-                    <Row>
+                    <Grid item>
                         <div className={style.socials}>
                             <a href={data.data[0].instagram} ><i className="fa fa-instagram"></i></a>
                             <a href={data.data[0].telegram}><i className="fa fa-telegram"></i></a>
                             <a href={data.data[0].email}><i className="fa fa-envelope"></i></a>
                         </div>
-                    </Row>
-                    <Row >
+                    </Grid>
+                    <Grid item >
                         <div className={style.s2}>
                             <div className={style.phone_number}>
                                 <p> مشاوره رایگان تلفنی: </p>
@@ -126,7 +127,7 @@ const Header = (props) => {
                                 <i className="fa fa-phone" aria-hidden="true"></i>
                             </div>
                         </div>
-                    </Row>
+                    </Grid>
             </div>
             </>}
             

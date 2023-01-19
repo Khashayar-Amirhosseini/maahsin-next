@@ -13,6 +13,10 @@
   src: local('BYekan'), url(./fonts/BYekan.ttf) format('truetype');
   src: local('BYekan'), url(./fonts/BYekan.woff) format('woff');
 }
+:root{
+  --primary-color:#1c2d15f2;
+  --secondary-color:#f3b40d;
+}
 
 .container{
   max-width: 100%;
@@ -25,6 +29,35 @@
 .like button:focus{
 box-shadow: none;
 }
-h1,h3{
+h1,h2,h3,h4,h5,p{
 font-family: "BYekan";
+}
+
+.main_title{
+  text-align: center !important;
+}
+.main_title img{
+  width: 20rem !important
+}
+
+.MuiButtonBase-root.Mui-expanded  {
+  background-color: var(--primary-color) !important;
+  color: var(--secondary-color);
+  border-radius: 20px;
+}
+MuiButtonBase-root{
+  border-radius: 20px;
+}
+
+.MuiAccordionSummary-expandIconWrapper.Mui-expanded{
+  color: var(--secondary-color) !important;
+}
+
+.MuiAccordion-root:last-of-type{
+  border-bottom-left-radius:20px;
+  border-bottom-right-radius:20px
+}
+.MuiAccordion-root:first-of-type{
+  border-bottom-left-radius:20px;
+  border-bottom-right-radius:20px
 }

@@ -4,12 +4,16 @@ import '../styles/fonts/font-awesome.min.css'
 import '../assets/ihover/ihover.css'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { ThemeProvider } from 'react-bootstrap'
 import Head from 'next/head'
-import { Html } from 'next/document'
+import createEmotionCache from '../../config/createEmotionCache'
+import { AppProps } from 'next/app'
+import { CacheProvider, EmotionCache } from '@emotion/react'
+import { CssBaseline, ThemeProvider } from '@mui/material'
+import theme from 'config/theme'
 
-export default function App({ Component, pageProps }) {
+const clientSideEmotionCache = createEmotionCache();
+
+export default function App(props) {
   const Address = "http://maahsin-test.click/MahsinApi"    
     const user = { userInf: { name: "مهمان", family: "", id: 0, phoneNumber: '', email: '', footer: false }, token: "" }
     const [isAuth, setIsAuth] = useState(false);
@@ -31,18 +35,28 @@ export default function App({ Component, pageProps }) {
         setAthenticatedUser(user);
         localStorage.removeItem("user")
     }
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
   <>
-
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Header address={Address}/>
+         <Component {...pageProps} />
+      </ThemeProvider>
+    </CacheProvider>
     
-    <Head>
-    <title>
-          کلینیک ماه سین
-        </title>
-        <meta
-          name="کلینیک ماه سین"
-          dir='rtl'
-        />
+   {/* <Head>
+      <title>
+            کلینیک ماه سین
+          </title>
+          <meta
+            name="کلینیک ماه سین"
+            dir='rtl'
+          />
     </Head>
    
     <ThemeProvider dir='rtl'  breakpoints={[ 'lg', 'md', 'sm']} minBreakpoint="sm">
@@ -50,7 +64,7 @@ export default function App({ Component, pageProps }) {
       <Component {...pageProps} />
     </ThemeProvider>
     
-    
+  */}
   </>
   )
 }

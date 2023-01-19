@@ -25,6 +25,7 @@
     font-family: BYekan;
     width: fit-content;
     float: right;
+    margin-top: 0;
 }
 .phone_number a{
     font-family: BYekan;
@@ -38,6 +39,7 @@
 }
 .logo{
     text-align: center;
+    justify-content: center;
 }
 .logo_img{
     height: 222px;

@@ -45,7 +45,7 @@ font-family: "BYekan";
   color: var(--secondary-color);
   border-radius: 20px;
 }
-MuiButtonBase-root{
+.MuiButtonBase-root{
   border-radius: 20px;
 }
 
@@ -58,6 +58,20 @@ MuiButtonBase-root{
   border-bottom-right-radius:20px
 }
 .MuiAccordion-root:first-of-type{
-  border-bottom-left-radius:20px;
-  border-bottom-right-radius:20px
+  border-top-left-radius:20px;
+  border-top-right-radius:20px
 }
+.MuiAppBar-root{
+  flex-direction: row;
+}
+.MuiButton-root:hover{
+  color: var(--secondary-color);
+}
+.MuiDrawer-paper{
+  background-color: var(--primary-color);
+  color: white;
+}
+.MuiDrawer-paper:hover{
+  color: var(--secondary-color);
+}
+

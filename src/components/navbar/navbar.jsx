@@ -1,222 +1,148 @@
-import { useContext, useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
-import './navbar.css';
-import logo from '../../assets/img/Logo.jpg';
-import headingPic from '../../assets/img/heading-cream.svg'
-import { CSSTransition } from "react-transition-group";
-import SignInModal from "../signInModal/signInModal";
-import { HashLink } from 'react-router-hash-link';
-import axios from "axios";
-import DiscountModal from "../discountModal/discountModal";
-
-
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import AppBar from '@mui/material/AppBar';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import MenuIcon from '@mui/icons-material/Menu';
+import Toolbar from '@mui/material/Toolbar';
+import primary from '../../../config/theme';
+import secondary from '../../../config/theme';
+import { width } from '@mui/system';
+import { Grade } from '@mui/icons-material';
+import { Box, Button, FormControl, Grid, Modal, TextField, Typography } from '@mui/material';
+import style from './navbar.module.css'
 
 
 const NavBar = (props) => {
-
-    const [toggleMenu, setToggleMenu] = useState(false)
-    const [scrollHight, setScrollHight] = useState(0)
-    const [showNav, setShowNav] = useState(false)
-    const user = props.user;
-    const [discount,setDiscount]=useState([]);
-    const Address=props.address;
-    const isAuth=props.isAuth;
-
-    const controlNavbar = () => {
-        if (window.scrollY > 350) {
-            setShowNav(true)
-        } else {
-            setShowNav(false)
-        }
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [scrollHight, setScrollHight] = React.useState(0)
+  const handleDrawerToggle = () => {
+      setMobileOpen((prevState) => !prevState);
+    };
+  const [showNav, setShowNav] = React.useState(false)
+  const drawerWidth = 240;
+  const navItems = [{name:'خانه',action:'#'},
+                  {name:'خدمات',action:'#'},
+                  {name:'تجهیزات',action:'#'},
+                  {name:'مقالات',action:'#'},
+                  {name:'درباره ما',action:'#'},
+                  {name:'عضویت/ ورود',action:handleOpen}
+                ];
+    
+    {React.useEffect(() => {
+      if(typeof window!='undefined'){
+      window.addEventListener('scroll', controlNavbar)
+      return () => {
+          window.removeEventListener('scroll', controlNavbar)
+      }
+  }}, [])
+  const controlNavbar = () => {
+    if (window.scrollY > 350) {
+        setShowNav(true)
+    } else {
+        setShowNav(false)
     }
-    useEffect(() => {
-        window.addEventListener('scroll', controlNavbar)
-        return () => {
-            window.removeEventListener('scroll', controlNavbar)
-        }
-    }, [])
-    useEffect(() => {
-        onclick = () => {
-            if (toggleMenu) {
-                setToggleMenu(false);
-            }
-        }
-
-    })
+  } }
+    const drawer = (
+      <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center'}}>
+        <Divider />
+        <List>
+          {navItems.map((item) => (
+            <ListItem key={item.name} disablePadding>
+              <ListItemButton sx={{ textAlign: 'center' }} onClick={item.action}>
+                <ListItemText primary={item.name} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    );
+  
     
-
-    const logoutHandler = () => {
-        props.logout();
-    }
-
-    useEffect(async()=>{
-        if(isAuth){
-                let response = await axios({
-                    method: "get",
-                    url: `${Address}/action/user/findAllDiscount.do?customerId=${user.userInf.id}`
-                })
-                setDiscount(response.data) 
-        }
-    },[isAuth])
-    
-    
-    
-    let numberOfDiscount=0
-    if(isAuth&&discount.length>0){
-    numberOfDiscount=discount.filter((d)=>d.expiredDate>new Date()&&d.state==="active").length;
-    numberOfDiscount>10&&(numberOfDiscount="+10")}
-    const showDiscountLabel= (isAuth&&(numberOfDiscount>0))
-    const[discountModal,setDiscountModal]=useState(false)
-    const showDiscountModal=()=>{
-        setDiscountModal(!discountModal)
-    }
     return (
+      <>
+      <Box  sx={{ display: 'flex' }}>
+        <AppBar component="nav" color='transparent' position='relative' className={showNav?(style.alwaysTop):'f'} >
+          <Toolbar>
+            <IconButton
+              className={style.Icon_Button}
+              aria-label="open drawer"
+              
+              onClick={handleDrawerToggle}
+              sx={{  display: { sm: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Box sx={{ display: { xs: 'none', sm: 'block'} }}>
+              {navItems.map((item) => (
+                <Button key={item.name} onClick={item.action}>
+                  <p>{item.name}</p>
+                </Button>
+              ))}
+            </Box>
+          </Toolbar>
+        </AppBar>
+        <Box component="nav">
+          <Drawer   
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth},
+            }}
+          >
+            <img className={style.headerPic} src={'img/heading-cream.svg'} />
+            {drawer}
+          </Drawer>
+        </Box>
+    </Box>
+    <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        >
+        <Box className={style.modal}>
+            <Typography variant="h4">ورود</Typography>
+            <Grid container spacing={2} textAlign='center'>
+                <Grid sx={{width:'80%'} } item>
+                    <FormControl >
+                        <TextField required 
+                        id="standard-basic" 
+                        label="نام کاربری" 
+                        variant="standard"/>
+                        <TextField required 
+                        id="standard-basic" 
+                        label="رمز ورود"
+                        variant="standard"
+                        type='password'
+                        sx={{margin:'5px'}}/>
+                    </FormControl> 
+                </Grid>
+                <Grid item sx={{width:'100%'}} textAlign='center'>
+                    <Button size="small" variant="outlined" color='primary' >
+                           
+                    </Button> 
+                </Grid>
+            </Grid>     
+        </Box>
+      </Modal>
+    </>
 
-
-
-        <>
-            <nav className='expanded-navbar' >
-                <ul className="nav-list-items ">
-                    <li className="nav-item ml-2 ">
-                        <NavLink className="nav-link " aria-current="page" to="/" >خانه</NavLink>
-                    </li>
-                    <li className="nav-item">
-                    <HashLink className="nav-link" to="/#about">درباره ما</HashLink>  
-                    </li>
-                    <li className="nav-item">
-                    <HashLink className="nav-link" to="/#services">خدمات</HashLink>  
-                    </li>
-                    <li className="nav-item">
-                    <HashLink className="nav-link" to="/#contents">مقالات</HashLink>  
-                    </li>
-                    <li className="nav-item">
-                    <HashLink className="nav-link" to="/#fasilites">تجهیزات</HashLink>  
-                    </li>
-                    {(!isAuth)&&(<li className="nav-item">
-                        <a className="nav-link" aria-current="page" data-bs-toggle="modal" data-bs-target="#signIn" to="#signIn" style={{ cursor: "pointer" }} >عضویت/ورود</a>
-                    </li>)}
-                    {showDiscountLabel&&(<li className="nav-item position-relative">
-                               <button className="nav-link" onClick={showDiscountModal}>تخفیفات شما 
-                               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{numberOfDiscount}<span className="visually-hidden">unread messages</span>
-                               </span>
-                               </button>
-                    </li>)}
-                </ul>
-            </nav>
-            <button className="togbut" type="button" onClick={() => { setToggleMenu(true) }}>
-                <i className="fa fa-bars fa-2x" aria-hidden="true"></i>
-            </button>
-
-
-            {toggleMenu && (
-                <div className="navbar-small-screen"  >
-                    <div className="row" style={{ justifyContent: "left" }}>
-                        <button type="button" className="btn-close" aria-label="Close" onClick={() => { setToggleMenu(false) }}></button>
-                    </div>
-
-                    {isAuth&&(
-                        <div className="row">
-                            <div className="col-10" style={{ fontFamily: "bYekan" }}>
-                                <div><h3><NavLink to="userProfile"><i className="fa fa-user-circle-o " style={{ marginLeft: 5 }} aria-hidden="true"></i></NavLink></h3><h3>{user.userInf.name} {user.userInf.family}</h3></div>
-                            </div>
-                            <div className='col-2' style={{ textAlign: 'left' }} >
-                                <button style={{ backgroundColor: "rgba(0, 0, 0, 0)", border: 'none', height: "100%" }} onClick={logoutHandler}><i className="fa fa-power-off" aria-hidden="true"></i></button>
-                            </div>
-
-                        </div>)}
-                    <div className="row">
-                        <img src={headingPic} style={{ width: "100%" }} />
-                    </div>
-
-                    <div className="row">
-                        <ul className="slider-nav">
-                            <li className="small-screen-nav-item ml-2 ">
-                                <NavLink className="small-screen-nav-item" aria-current="page" to="/" >خانه</NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <HashLink className="small-screen-nav-item" to="/#about">درباره ما</HashLink>
-                            </li>
-                            <li className="nav-item">
-                                <HashLink className="small-screen-nav-item" to="/#contactUs">تماس با ما</HashLink>
-                            </li>
-                            <li className="nav-item">
-                                <HashLink className="small-screen-nav-item" to="/#services">خدمات</HashLink>
-                            </li>
-                            <li className="nav-item">
-                                <HashLink className="small-screen-nav-item" to="/#contents">مقالات</HashLink>
-                            </li>
-                            <li className="nav-item">
-                                <HashLink className="small-screen-nav-item" to="/#fasilites">تجهیزات</HashLink>
-                            </li>
-                            {!isAuth&&(<li className="nav-item">
-                                <a style={{ cursor: "pointer" }} className="small-screen-nav-item" aria-current="page" data-bs-toggle="modal" data-bs-target="#signIn" to="#signIn" >عضویت/ ورود</a>
-                            </li>)}
-                            {showDiscountLabel&&(<li className="nav-item position-relative" style={{width:"90px"}}>
-                               <button className="small-screen-nav-item" onClick={showDiscountModal}>تخفیفات شما 
-                               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{numberOfDiscount}<span className="visually-hidden">unread messages</span>
-                               </span>
-                               </button>
-                             </li>)}
-                        </ul>
-                    </div>
-
-
-                </div>
-
-
-            )}
-            {showNav && (
-                <nav className='expanded-navbar alwaysTop' >
-                    
-                    {isAuth ? <NavLink  to="userProfile"><i className="fa fa-user-circle-o navUserProfile" aria-hidden="true"></i></NavLink> : <></>}
-                    
-                    <ul className="nav-list-items" style={{justifyContent:"center"}}>
-                        
-                        <li className="nav-item ml-2 ">
-                            <NavLink className="nav-link2 " aria-current="page" to="/" >خانه</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <HashLink className="nav-link2" to="/#about">درباره ما</HashLink>
-                        </li>
-                        <li className="nav-item">
-                            <HashLink className="nav-link2" to="/#contactUs">تماس با ما</HashLink>
-                        </li>
-                        <li className="nav-item">
-                            <HashLink className="nav-link2" to="/#services">خدمات</HashLink>
-                        </li>
-                        
-                        <li className="nav-item">
-                            <HashLink className="nav-link2" to="/#contents">مقالات</HashLink>
-                        </li>
-                        <li className="nav-item">
-                            <HashLink className="nav-link2" to="/#fasilites">تجهیزات</HashLink>
-                        </li>
-                        {!isAuth&&(<li className="nav-item">
-                            <a className="nav-link2" aria-current="page" data-bs-toggle="modal" data-bs-target="#signIn" to="#signIn" style={{ cursor: "pointer" }}>عضویت/ورود</a>
-                        </li>)}
-                        {showDiscountLabel&&(<li className="nav-item position-relative">
-                               <button className="nav-link2" onClick={showDiscountModal}>تخفیفات شما 
-                               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{numberOfDiscount}<span className="visually-hidden">unread messages</span>
-                               </span>
-                               </button>
-                              </li>)}
-                    </ul>
-                    
-                    {isAuth ? <button style={{ backgroundColor: "rgba(0, 0, 0, 0)", border: 'none',height:"100%",position:"absolute",left:30 }} onClick={logoutHandler}><i className="fa fa-power-off" aria-hidden="true"></i></button>: <></>}
-                </nav>
-            )}
-            {showNav && (
-                <button className="togbut togbut-onTop " type="button" onClick={() => { setToggleMenu(true) }}>
-                    <i className="fa fa-bars fa-2x" aria-hidden="true"></i>
-                </button>
-            )
-            }
-            {discountModal&&(
-            <DiscountModal discount={discount} showDiscountModal={showDiscountModal}/>)}
-            
-             
-        </>
-    )
+    );
 }
 
 export default NavBar;

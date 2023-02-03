@@ -16,11 +16,10 @@ const Header = (props) => {
     const isAuth=props.isAuth;
     const logoutHandler=()=>{
         props.logout();
-    }  
-   console.log(isLoading)
-   console.log(data)
+    } 
+    
     return (
-        <header className={style.main} dir='rtl'>
+        <div className={style.main}>
             {isAuth?
             <Grid container>
             <div className={style.userProfile}>
@@ -89,23 +88,17 @@ const Header = (props) => {
             {isLoading?
             <>
             <div className={style.small_screen}>
-                
-                    <Grid container>
-                        <div className={style.socials}>
-                            <HeaderLoading/>
-                        </div>
-                    </Grid>
-                    <Grid container>
+                    <div className={style.socials}>
+                        <HeaderLoading/>
+                    </div>
                     <div className={style.s2}>
                         <div className={style.phone_number}>
-                            <p> مشاوره رایگان تلفنی: </p>
+                            <p> مشاورهdd رایگان تلفنی: </p>
                             <SkeletonTheme baseColor="#F3B40D" highlightColor="#444" width={50}>
                                 <Skeleton width={100} height={20} className="socialSkeleton"/>
                             </SkeletonTheme>
                         </div>
-                    </div>
-                    </Grid>
-                
+                    </div> 
              </div>   
             
 
@@ -132,7 +125,7 @@ const Header = (props) => {
             </>}
             
 
-        </header>
+        </div>
     );
 }
 

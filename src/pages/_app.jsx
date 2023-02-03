@@ -8,13 +8,18 @@ import Head from 'next/head'
 import createEmotionCache from '../../config/createEmotionCache'
 import { AppProps } from 'next/app'
 import { CacheProvider, EmotionCache } from '@emotion/react'
-import { CssBaseline, ThemeProvider } from '@mui/material'
+import { CssBaseline, Dialog, ThemeProvider } from '@mui/material'
 import theme from 'config/theme'
+import NavBar from '@/components/navbar/navbar'
+import { Html } from 'next/document'
+import { wrapper, store } from "../redux/store";
+import { Provider } from "react-redux";
+
 
 const clientSideEmotionCache = createEmotionCache();
 
-export default function App(props) {
-  const Address = "http://maahsin-test.click/MahsinApi"    
+function App(props) {
+  const Address = "http://maahsin-test.click/MahsinApi"    ;
     const user = { userInf: { name: "مهمان", family: "", id: 0, phoneNumber: '', email: '', footer: false }, token: "" }
     const [isAuth, setIsAuth] = useState(false);
     const [athenticatedUser, setAthenticatedUser] = useState(user);
@@ -38,33 +43,22 @@ export default function App(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
   <>
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Header address={Address}/>
-         <Component {...pageProps} />
-      </ThemeProvider>
-    </CacheProvider>
-    
-   {/* <Head>
-      <title>
-            کلینیک ماه سین
-          </title>
-          <meta
-            name="کلینیک ماه سین"
-            dir='rtl'
-          />
+    <Head>
+      <meta name="viewport" content="initial-scale=1, width=device-width" />
     </Head>
-   
-    <ThemeProvider dir='rtl'  breakpoints={[ 'lg', 'md', 'sm']} minBreakpoint="sm">
-      <Header address={Address} user={athenticatedUser} isAuth={isAuth} logout={logout}/>
-      <Component {...pageProps} />
-    </ThemeProvider>
-    
-  */}
+    <div dir='rtl'>
+      <CacheProvider value={emotionCache}>  
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Provider store={store}>
+            <Header address={Address}/>
+            <NavBar/>
+            <Component {...pageProps} address={Address} />
+          </Provider>
+        </ThemeProvider>
+      </CacheProvider>
+    </div>
   </>
   )
 }
+export default wrapper.withRedux(App);

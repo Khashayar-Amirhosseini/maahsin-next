@@ -1,0 +1,53 @@
+@media screen and (min-width:600px) {  
+    .alwaysTop{
+        position: fixed; /* Set the navbar to fixed position */
+        top: 0; /* Position the navbar at the top of the page */
+       width: 100%;
+       background-color: rgba(17, 37, 10, 0.911);
+       padding-bottom: 0;
+       z-index: 100;
+       background: url(../../../public/img/header.jpg);
+       
+      } 
+}
+
+  .alwaysTop p{
+    color: var(--secondary-color);
+  }
+  .main{
+    color: var(--primary-color);
+  }
+  @media screen and (max-width:600px){
+    .alwaysTop{
+        position: fixed; /* Set the navbar to fixed position */
+        top: 0; /* Position the navbar at the top of the page */
+        width: 100%;
+        background-color: transparent;
+        padding-bottom: 0;
+        z-index: 100;
+        box-shadow: none;
+    }
+  }
+  .Icon_Button{
+    color: var(--secondary-color);
+  }
+
+  .modal{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width:90% ;
+  background-color:#fff;
+  border: 2px solid #000;
+  box-shadow: 24;
+  direction: rtl
+  }
+  .modal p{
+    size: 4;
+  }
+  @media screen and (min-width:559px){
+    .modal{
+      width: 50%;
+    }
+  }

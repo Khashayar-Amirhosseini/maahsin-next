@@ -1,0 +1,21 @@
+.modal{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width:90% ;
+  background-color:#fff;
+  border: 2px solid #000;
+  box-shadow: 24;
+  direction: rtl;
+  border-radius: 20px;
+  border-bottom: var(--primary-color);
+  }
+  .modal p{
+    size: 4;
+  }
+  @media screen and (min-width:559px){
+    .modal{
+      width: 40%;
+    }
+  }

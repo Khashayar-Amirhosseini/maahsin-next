@@ -17,10 +17,12 @@ import { width } from '@mui/system';
 import { Grade } from '@mui/icons-material';
 import { Box, Button, FormControl, Grid, Modal, TextField, Typography } from '@mui/material';
 import style from './navbar.module.css'
+import SignInModal from '../signInModal/signInModal';
+import { useState } from 'react';
 
 
 const NavBar = (props) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -28,7 +30,7 @@ const NavBar = (props) => {
   const handleDrawerToggle = () => {
       setMobileOpen((prevState) => !prevState);
     };
-  const [showNav, setShowNav] = React.useState(false)
+  const [showNav, setShowNav] = useState(false)
   const drawerWidth = 240;
   const navItems = [{name:'خانه',action:'#'},
                   {name:'خدمات',action:'#'},
@@ -109,37 +111,7 @@ const NavBar = (props) => {
           </Drawer>
         </Box>
     </Box>
-    <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        >
-        <Box className={style.modal}>
-            <Typography variant="h4">ورود</Typography>
-            <Grid container spacing={2} textAlign='center'>
-                <Grid sx={{width:'80%'} } item>
-                    <FormControl >
-                        <TextField required 
-                        id="standard-basic" 
-                        label="نام کاربری" 
-                        variant="standard"/>
-                        <TextField required 
-                        id="standard-basic" 
-                        label="رمز ورود"
-                        variant="standard"
-                        type='password'
-                        sx={{margin:'5px'}}/>
-                    </FormControl> 
-                </Grid>
-                <Grid item sx={{width:'100%'}} textAlign='center'>
-                    <Button size="small" variant="outlined" color='primary' >
-                           
-                    </Button> 
-                </Grid>
-            </Grid>     
-        </Box>
-      </Modal>
+    <SignInModal open={open} close={handleClose} />
     </>
 
     );

@@ -3,5 +3,6 @@ const initialState = {
   };
   const AddressReducer = (state = initialState, action) => {
         return state; 
-  };
+  }
   export default AddressReducer;
+ 

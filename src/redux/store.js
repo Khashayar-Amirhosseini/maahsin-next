@@ -10,9 +10,8 @@ import HistoryReducer from "./reducers/historyReducer";
 import { next } from "stylis";
 
 const combinedReducer= combineReducers({
- DoctorReducer,HistoryReducer
+ DoctorReducer,HistoryReducer,AddressReducer
 })
-
 const middleware = [thunk];
 const initalState = {};
 const uniqueState=(obj)=>{
@@ -29,7 +28,7 @@ const masterReducer=(state,action)=>{
     const nextState={
       ...state,
       DoctorReducer:{doctors:[...uniqueState([...action.payload.DoctorReducer.doctors,...state.DoctorReducer.doctors])]},
-      HistoryReducer:{history:action.payload.HistoryReducer}
+      HistoryReducer:{history:action.payload.HistoryReducer},
     }
     return nextState 
   }

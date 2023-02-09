@@ -6,35 +6,31 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { Link, NavLink } from 'next';
 import useSWRInfinite from 'swr'
 import { Grid } from '@mui/material';
+import { useSelector } from 'react-redux';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined';
 //import UserProfile from '../../containers/userProfile/userProfile';
 //import { calculateNewValue } from '@testing-library/user-event/dist/utils';
 const Header = (props) => {
-    const Address=props.address;
-    const user=props.user;
+    const {Address}=useSelector(state=>state.AddressReducer);
+    const {User}=useSelector(state=>state.UserReducer)
     const url=`${Address}/action/guest/findAllFooters.do?`;
     const{data,error,isLoading}=useSWRInfinite(url,axios);
-    const isAuth=props.isAuth;
     const logoutHandler=()=>{
         props.logout();
     } 
-    
     return (
         <div className={style.main}>
-            {isAuth?
+            {User.isAuthenticated?
             <Grid container>
-            <div className={style.userProfile}>
-                <Grid item >
-                    <div style={{float:"right",width:"auto"}}><NavLink to="/userProfile"><i className="fa fa-user-circle-o" aria-hidden="true"></i></NavLink></div>
-                    <p style={{float:"right",width:"auto"}}>سلام {user.userInf.name} عزیز </p>
+                <Grid item className={style.userProfile} sx={{width:'50%'}}>
+                    <p color='secondary' style={{float:"right",width:"auto"}}> <AccountCircleOutlinedIcon color='secondary' className={style.icone}/> سلام {User.userInf.name} عزیز </p>
                 </Grid>
-                <Grid item>
-                    <div style={{textAlign:'left'}} >
-                    <button style={{backgroundColor:"rgba(0, 0, 0, 0)",border:'none'}} onClick={logoutHandler}><i className="fa fa-power-off" aria-hidden="true"></i></button>
-                    </div>                
+                <Grid item className={style.userProfile} sx={{width:'50%',textAlign:'left',alignSelf:'center'}}>
+                    <button style={{backgroundColor:"rgba(0, 0, 0, 0)",border:'none'}} onClick={logoutHandler}><PowerSettingsNewOutlinedIcon color='secondary' className={style.icone}/></button>              
                 </Grid>
-                
-            </div>
-            </Grid>:<></>
+            </Grid>:
+            <></>
             }
             <div className={style.top_menu}>
                 <Grid container>

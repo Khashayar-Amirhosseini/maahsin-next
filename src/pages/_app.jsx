@@ -13,34 +13,28 @@ import theme from 'config/theme'
 import NavBar from '@/components/navbar/navbar'
 import { Html } from 'next/document'
 import { wrapper, store } from "../redux/store";
-import { Provider } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { userLoggin, userLogout } from '@/redux/action/userAction'
+import { Logout } from '@mui/icons-material'
+
 
 
 const clientSideEmotionCache = createEmotionCache();
 
 function App(props) {
-  const Address = "http://maahsin-test.click/MahsinApi";
-    const user = { userInf: { name: "مهمان", family: "", id: 0, phoneNumber: '', email: '', footer: false }, token: "" }
-    const [isAuth, setIsAuth] = useState(false);
-    const [athenticatedUser, setAthenticatedUser] = useState(user);
-    useEffect(() => {
-        const loggedInUser = localStorage.getItem("user");
-        if (loggedInUser) {
-            const foundUser = JSON.parse(loggedInUser);
-            setIsAuth(true)
-            setAthenticatedUser(foundUser);
-        }
-    }, [])
-    const login = (loggedUser) => {
-        setAthenticatedUser(loggedUser);
-        setIsAuth(true)
-    }
-    const logout=()=>{
-        setIsAuth(false);
-        setAthenticatedUser(user);
-        localStorage.removeItem("user")
-    }
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const dispatch=useDispatch();
+  useEffect(()=>{
+    if(localStorage!='undefined'){
+    const loggedUser=localStorage.getItem("user")
+    if(loggedUser){
+      dispatch(userLoggin(JSON.parse(loggedUser)))
+    }}
+  })
+  const logout=()=>{
+    localStorage.removeItem("user");
+    dispatch(userLogout());
+  }
   return (
   <>
     <Head>
@@ -51,9 +45,9 @@ function App(props) {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Provider store={store}>
-            <Header address={Address}/>
-            <NavBar/>
-            <Component {...pageProps} address={Address} />
+            <Header logout={logout}/>
+            <NavBar logout={logout}/>
+            <Component {...pageProps} />
           </Provider>
         </ThemeProvider>
       </CacheProvider>

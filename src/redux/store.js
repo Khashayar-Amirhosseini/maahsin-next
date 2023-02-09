@@ -7,10 +7,11 @@ import { combineReducers } from "redux";
 import AddressReducer from "./reducers/addressReducer";
 import DoctorReducer from "./reducers/doctorReducer";
 import HistoryReducer from "./reducers/historyReducer";
+import UserReducer from "./reducers/userReducer";
 import { next } from "stylis";
 
 const combinedReducer= combineReducers({
- DoctorReducer,HistoryReducer,AddressReducer
+ DoctorReducer,HistoryReducer,AddressReducer,UserReducer
 })
 const middleware = [thunk];
 const initalState = {};
@@ -28,7 +29,7 @@ const masterReducer=(state,action)=>{
     const nextState={
       ...state,
       DoctorReducer:{doctors:[...uniqueState([...action.payload.DoctorReducer.doctors,...state.DoctorReducer.doctors])]},
-      HistoryReducer:{history:action.payload.HistoryReducer},
+      HistoryReducer:{HistoryInf:action.payload.HistoryReducer.HistoryInf},
     }
     return nextState 
   }

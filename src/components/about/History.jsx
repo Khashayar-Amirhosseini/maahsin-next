@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, Grid, Modal, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, FormControl, Grid, Modal, TextField, Typography } from "@mui/material";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useState } from "react";
 import SaveIcon from '@mui/icons-material/Save';
@@ -7,6 +7,8 @@ import { store } from "@/redux/store";
 import HistoryReducer from "@/redux/reducers/historyReducer";
 import axios from "axios";
 import { updateHistory } from "@/redux/action/HistoryAction";
+import * as yup from 'yup';
+import SubmitFeedBacks from "../submitFeedbacks/SubmitFeedBacks";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -20,28 +22,77 @@ const style = {
     direction: 'rtl'
   };
 const History = () => {
+    const {Address}=useSelector(state=>state.AddressReducer);
     const dispatch=useDispatch();
-    const {history}=useSelector((state)=>state.HistoryReducer)
+    const {HistoryInf}=useSelector((state)=>state.HistoryReducer)
+    const{User}=useSelector(state=>state.UserReducer)
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [isChanged,setIsChange]=useState(false)
+    const [isSaved, setIsSaved]=useState(false)
+    const[errors,setErrors]=useState([])
+    const [isSending,setIsSending]=useState(false)
     const onChangeHandler=(e)=>{
-        history.history.description=e.target.value;
-        dispatch(updateHistory(history))
+        dispatch(updateHistory({...HistoryInf,description:e.target.value}))
+        setIsChange(true)
     }
-    const onclickHandeler={
-      
+    let schema=yup.object().shape({
+        description:yup.string().required('فیلد تاریخچه رو نباید خالی بذاری.')
+    })
+    const validate=async()=>{
+        try{
+           const result= await schema.validate(HistoryInf,{abortEarly:false});
+            return result
+        }
+        catch(error){
+           setErrors(error.errors)  
+        }
+       
     }
+    const submitHandler= async(e)=>{
+        setErrors([])
+        e.preventDefault();
+        const result=await validate();
+        if(result&&!isSaved){
+        setIsSending(true)   
+            try{
+                const response=await axios({
+                method: "get",
+                url: `${Address}/action/history/historySave.do?description=${HistoryInf.description}&userId=${User.userInf.id}`,
+                headers:{'Access-Token':`${User.token}`}
+                }) 
+                setIsSaved(true)
+                setIsSending(false)
+                setIsChange(false)
+            }
+            catch(e){
+                console.log(e)
+                if(e.response){
+                if(e.response.status===700){
+                    setErrors(["دسترسی مورد نیاز فراهم نشده است."]) 
+                }}
+                else{
+                    setErrors(["مشکل در سرور پیش اومده"])  
+                }
+               setIsSending(false)          
+            }   
+        }
+        
+    }
+
     return ( 
         <>
         <Grid container>
             <Grid item textAlign={'justify'}>
-                <Typography>{history.history.description}</Typography>
+                <Typography>{HistoryInf.description}</Typography>
             </Grid>
-            <Grid item>
+            <Grid>
+            {User.isAuthenticated&&(<Grid item>
                 <Button variant="outlined" color='primary' onClick={handleOpen} >
                     <EditOutlinedIcon/>
                 </Button>
+            </Grid>)}
             </Grid>
         </Grid>
         <Modal
@@ -61,13 +112,14 @@ const History = () => {
                         multiline 
                         variant="standard"
                         rows={4}
-                        value={history.history.description}
+                        value={HistoryInf.description}
                         onChange={e=> onChangeHandler(e)}/>
                     </FormControl> 
                 </Grid>
+                <SubmitFeedBacks success={isSaved?[User.userInf.family,new Date((HistoryInf.date)).toLocaleDateString('fa-IR')]:[]} errors={errors}/>
                 <Grid item sx={{width:'100%'}} textAlign='center'>
-                    <Button size="small" variant="outlined" color='primary' >
-                            <SaveIcon onClick/>
+                    <Button size="small" variant="outlined" color={isChanged?'error':'primary'} onClick={submitHandler} disabled={isSending}>
+                            {isSending?<CircularProgress/>:<SaveIcon/>}
                     </Button> 
                 </Grid>
             </Grid>     

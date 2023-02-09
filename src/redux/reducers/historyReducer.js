@@ -1,11 +1,11 @@
 const { historyActionType } = require("../types");
 const HistoryInitialState={
-    history:null
+    HistoryInf:{ss:"sdfsdf"}
 };
 const HistoryReducer=(state=HistoryInitialState,action)=>{
     switch (action.type){
         case historyActionType.UPDATE_HISTORY:{
-            return {...state,history:action.history}
+            return {...state,HistoryInf:action.history}
         }
         default:{
             return state

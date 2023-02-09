@@ -1,12 +1,16 @@
 import { padding } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from './signInModal.module.css';
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import * as yup from 'yup';
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AddressReducer from "@/redux/reducers/addressReducer";
-
+import { v4 as uuidv4 } from 'uuid';
+import theme from "config/theme";
+import { useTheme } from "@emotion/react";
+import { userLoggin } from "@/redux/action/userAction";
+import SubmitFeedBacks from "../submitFeedbacks/SubmitFeedBacks";
 
 
 const { Modal,Box, Typography,Grid, FormControl, TextField, Button } = require("@mui/material");
@@ -14,14 +18,21 @@ const { Modal,Box, Typography,Grid, FormControl, TextField, Button } = require("
 
 const SignInModal = (props) => {
     const {Address}=useSelector(state=>state.AddressReducer);
-    console.log("address",Address)
+    const {User}=useSelector(state=>state.UserReducer);
+    const dispatch=useDispatch();
     const [account, setAccount] = useState({
         email: '',
         password: ''
     });
     const [errors, setErrors] = useState([])
-    const [isSending, setIsSending] = useState(false)
+    const [isSending, setIsSending] = useState(false);
     const [isLoginSuccessful,setIsLoginSuccessFul]=useState(false);
+    const [showFeedBack,setShowFeedBack]=useState(false)
+    useEffect(()=>{
+        if(!User.isAuthenticated){
+            setIsLoginSuccessFul(false)
+        }
+    },[User.isAuthenticated])
     const handleChange = (e) => {
         const input = e.currentTarget;
         let newAccount = { ...account }
@@ -43,6 +54,16 @@ const SignInModal = (props) => {
         }
 
     }
+    const loginHandeler=(user)=>{
+        
+        const newUser={
+            userInf:user.userInf,
+            token:user.token,
+            isAuthenticated:true
+        }
+        dispatch(userLoggin(newUser))
+        localStorage.setItem("user",JSON.stringify(newUser)) 
+    }
     const submitHandler = async (e) => {
         setErrors([])
         setIsLoginSuccessFul(false)
@@ -62,8 +83,7 @@ const SignInModal = (props) => {
         
                 if(response.data.token){
                     setIsLoginSuccessFul(true);
-                    props.login(response.data);
-                    localStorage.setItem("user",JSON.stringify(response.data)) ; 
+                    loginHandeler(response.data); 
                 }
                 else{
                     setErrors(["رمز عبور یا ایمیل وارد شده صحیح نیست."])
@@ -74,7 +94,7 @@ const SignInModal = (props) => {
             }
             setIsSending(false)
         }
-
+        setShowFeedBack(true)
     }
 return(
     <Modal
@@ -86,28 +106,33 @@ return(
     <Box className={style.modal}>
         <Typography variant="h4" sx={{padding:2,borderBottom:'1px solid #ccc'}}>ورود</Typography>
         <Grid container spacing={2} textAlign='center'>
-            <Grid sx={{width:'100%'} } item>
-                <FormControl sx={{width:'80%',padding:'5px',borderBottom:'1px solid #ccc'}} >
+            <Grid sx={{width:'100%'} } item >
+                <FormControl className={style.input} sx={{width:'80%',padding:'5px',borderBottom:'1px solid #ccc'}} >
                     <TextField required 
                     id="standard-basic" 
-                    label="نام کاربری" 
+                    label="ایمیل" 
                     variant="outlined"
                     sx={{margin:"5px"}}
-                    value={account.userName}/>
+                    value={account.userName}
+                    name='email'
+                    onChange={handleChange}/>
                     <TextField required 
                     id="standard-basic" 
                     label="رمز ورود"
                     variant="outlined"
                     type='password'
                     sx={{margin:'5px'}}
-                    value={account.password}/>
+                    value={account.password}
+                    name='password'
+                    onChange={handleChange}/>
                 </FormControl> 
             </Grid>
-            
-                <Button size="small" sx={{marginTop:'5px !important',marginBottom:'5px !important',margin:'auto'}} variant="outlined" color='primary' >  
+            {showFeedBack&&(<SubmitFeedBacks errors={errors} success={isLoginSuccessful?['خوش آمدید']:[]} />)}
+            <Grid item sx={{width:'100%'}}>
+                <Button disabled={isSending} size="small" sx={{marginTop:'5px !important',marginBottom:'5px !important',margin:'auto'}} variant="outlined" color='primary' onClick={submitHandler} >  
                     <VpnKeyOutlinedIcon/>
                 </Button> 
-            
+            </Grid>
         </Grid>     
     </Box>
   </Modal>

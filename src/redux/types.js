@@ -7,7 +7,8 @@ export const doctorActionTypes={
 export const historyActionType={
     UPDATE_HISTORY:'UPDATE_HISTORY'
 };
-
+/////user///////
 export const userActionType={
-    LOG_IN:'LOG_IN'
+    LOG_IN:'LOG_IN',
+    LOG_OUT:'LOG_OUT'
 }

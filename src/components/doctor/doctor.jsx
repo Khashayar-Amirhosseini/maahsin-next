@@ -10,7 +10,6 @@ import style from '../doctor/doctor.module.css'
 
 const Doctrors = (props) => {
     const info= props.doctorInfo;
-
     return(
         <Grid  container item md={6}>
             <Grid   item md={6}>

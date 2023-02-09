@@ -14,6 +14,10 @@
   .alwaysTop p{
     color: var(--secondary-color);
   }
+  .alwaysTop p:hover{
+    color: #f7d67d;
+    cursor: pointer;
+  }
   .main{
     color: var(--primary-color);
   }
@@ -31,5 +35,28 @@
   .Icon_Button{
     color: var(--secondary-color);
   }
+  .Icon_Button:hover{
+    color: #f7d67d;
+    cursor: pointer;
+  }
+  .LogoutButton{
+    position: absolute;
+    left: 25px;
+    top: 20px;
+   
+  }
+  .LogoutButton path:hover{
+    color: #f7d67d;
+    cursor: pointer;
+  }
+
+  .userProfile path:hover{
+    color: #f7d67d;
+    cursor: pointer;
+  }
+  
+
+  
+  
 
   

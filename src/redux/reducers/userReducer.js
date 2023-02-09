@@ -12,7 +12,7 @@ const UserReducer = (state=userInitialState,action) => {
             return{...state,User:action.user}
         }
         case userActionType.LOG_OUT:{
-            return{...state,User:userInitialState}
+            return{...state,User:userInitialState.User}
         }
         default:{
             return state

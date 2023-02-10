@@ -24,3 +24,9 @@ export const saveButtonActionType={
     IS_CHANGED:'IS_CHANGED',
     IS_SENDING:'IS_SENDING'
 }
+
+////Submit Feedback///
+
+export const submitFeedBackActionType={
+    UPDATE:'UPDATE'
+}

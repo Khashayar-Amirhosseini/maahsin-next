@@ -11,6 +11,7 @@ import theme from "config/theme";
 import { useTheme } from "@emotion/react";
 import { userLoggin } from "@/redux/action/userAction";
 import SubmitFeedBacks from "../submitFeedbacks/SubmitFeedBacks";
+import { updateFeedBack } from "@/redux/action/submitFeedBackAction";
 
 
 const { Modal,Box, Typography,Grid, FormControl, TextField, Button } = require("@mui/material");
@@ -84,13 +85,14 @@ const SignInModal = (props) => {
                 if(response.data.token){
                     setIsLoginSuccessFul(true);
                     loginHandeler(response.data); 
+                    dispatch(updateFeedBack({errors:[],success:["خوش آمدید"]}))
                 }
                 else{
-                    setErrors(["رمز عبور یا ایمیل وارد شده صحیح نیست."])
+                    dispatch(updateFeedBack({errors:["رمز عبور یا ایمیل وارد شده صحیح نیست."],success:[]}))
                 }
             }
             catch (e) {
-                setErrors(["مشکل در سرور پیش اومده"])
+                dispatch(updateFeedBack({errors:["مشکل در سرور پیش اومده"],success:[]}))
             }
             setIsSending(false)
         }
@@ -127,7 +129,7 @@ return(
                     onChange={handleChange}/>
                 </FormControl> 
             </Grid>
-            {showFeedBack&&(<SubmitFeedBacks errors={errors} success={isLoginSuccessful?['خوش آمدید']:[]} />)}
+            {showFeedBack&&(<SubmitFeedBacks/>)}
             <Grid item sx={{width:'100%'}}>
                 <Button disabled={isSending} size="small" sx={{marginTop:'5px !important',marginBottom:'5px !important',margin:'auto'}} variant="outlined" color='primary' onClick={submitHandler} >  
                     <VpnKeyOutlinedIcon/>

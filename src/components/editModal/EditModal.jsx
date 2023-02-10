@@ -38,7 +38,7 @@ return(
                    {props.children}
                 </FormControl> 
             </Grid>
-            <SubmitFeedBacks success={isSaved?success:[]} errors={errors}/>
+            <SubmitFeedBacks/>
             <SaveButton submitHandler={submitHandler}/>
         </Grid>     
     </Box>

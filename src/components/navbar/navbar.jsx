@@ -19,14 +19,16 @@ import { Box, Button, FormControl, Grid, Modal, TextField, Typography } from '@m
 import style from './navbar.module.css'
 import SignInModal from '../signInModal/signInModal';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined';
+import { updateFeedBack } from '@/redux/action/submitFeedBackAction';
 
 
 const NavBar = (props) => {
+  const dispatch=useDispatch();
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {setOpen(true);dispatch(updateFeedBack({errors:[],success:[]}))}
   const handleClose = () => setOpen(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [scrollHight, setScrollHight] = React.useState(0)

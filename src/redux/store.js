@@ -11,9 +11,12 @@ import UserReducer from "./reducers/userReducer";
 import EditModalReducer from "./reducers/editModalReducer"
 import SaveButtonReducer from "./reducers/saveButtonReducer"
 import { next } from "stylis";
+import SubmitFeedBackReducer from "./reducers/submitFeedBackReducer";
 
 const combinedReducer= combineReducers({
- DoctorReducer,HistoryReducer,AddressReducer,UserReducer,EditModalReducer,SaveButtonReducer
+ DoctorReducer,HistoryReducer,AddressReducer,
+ UserReducer,EditModalReducer,SaveButtonReducer,
+ SubmitFeedBackReducer
 })
 const middleware = [thunk];
 const initalState = {};

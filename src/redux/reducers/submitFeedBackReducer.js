@@ -6,7 +6,6 @@ const InitialState={
 }
 
 const SubmitFeedBackReducer = (state=InitialState,action) => {
-    console.log(action)
     switch (action.type){
         case submitFeedBackActionType.UPDATE:{
             return{...state,Success:action.content.success,Errors:action.content.errors}

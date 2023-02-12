@@ -13,36 +13,23 @@ import SaveButton from "../saveButton/SaveButton";
 import EditModal from "../editModal/EditModal";
 import { openModal } from "@/redux/action/editModelAction";
 import { isChanged, isSending } from "@/redux/action/saveButtonAction";
+import { update, updateFeedBack } from "@/redux/action/submitFeedBackAction";
 
-const History = () => {
+const History = () => {  
     const {Address}=useSelector(state=>state.AddressReducer);
     const dispatch=useDispatch();
     const {HistoryInf}=useSelector((state)=>state.HistoryReducer)
     const{User}=useSelector(state=>state.UserReducer)
-    //const [isChanged,setIsChange]=useState(false)
     const [isSaved, setIsSaved]=useState(false)
-    const[errors,setErrors]=useState([])
-    //const [isSending,setIsSending]=useState(false)
-    const [open, setOpen] = useState(false);
-    const onChangeHandler=(e)=>{
+    const onChangeHandler=async(e)=>{
         dispatch(updateHistory({...HistoryInf,description:e.target.value}));
         dispatch(isChanged(true))
     }
-    let schema=yup.object().shape({
-        description:yup.string().required('فیلد تاریخچه رو نباید خالی بذاری.')
-    })
-    const validate=async()=>{
-        try{
-           const result= await schema.validate(HistoryInf,{abortEarly:false});
-            return result
-        }
-        catch(error){
-           setErrors(error.errors)  
-        }
-       
-    }
-    const submitHandler= async(e)=>{
-        setErrors([])
+    
+    
+    /*const historySubmitHandler= async(e)=>{
+        console.log(HistoryInf.description)
+        dispatch(updateFeedBack({errors:[],success:[]}))
         e.preventDefault();
         const result=await validate();
         if(result&&!isSaved){
@@ -54,43 +41,40 @@ const History = () => {
                 headers:{'Access-Token':`${User.token}`}
                 }) 
                 dispatch(isChanged(false))
+                dispatch(updateFeedBack({errors:[],success:[User.userInf.family,new Date((HistoryInf.date)).toLocaleDateString('fa-IR')]}))
             }
             catch(e){
                 if(e.response){
                 if(e.response.status===700){
-                    setErrors(["دسترسی مورد نیاز فراهم نشده است."]) 
+                    dispatch(updateFeedBack({errors:["دسترسی مورد نیاز فراهم نشده است."],success:[]}))
                 }}
                 else{
-                    setErrors(["مشکل در سرور پیش اومده"])  
-                }
-                         
+                    dispatch(updateFeedBack({errors:["مشکل در سرور پیش اومده"],success:[]}))
+                }              
             }
             dispatch(isSending(false))   
-        }
-        
-    }
-
+        }  
+    }*/
+    const child=
+    <TextField required 
+        id="standard-basic" 
+        label="تاریخچه" 
+        multiline 
+        variant="standard"
+        rows={4}
+        defaultValue={HistoryInf.description}
+        onChange={e=> onChangeHandler(e)}
+    />
+    const submitHandler='history'
     return ( 
         <>
         <Grid container>
             <Grid item textAlign={'justify'}>
                 <Typography>{HistoryInf.description}</Typography>
             </Grid>
-            <EditButton user={User} onClick={e=>{dispatch(openModal())}}/>
+            <EditButton user={User} onClick={e=>{dispatch(openModal(child,submitHandler)); dispatch(updateFeedBack({errors:[],success:[]}));}}/>
         </Grid>
-        <EditModal isSaved={isSaved}
-            errors={errors}
-            success={[User.userInf.family,new Date((HistoryInf.date)).toLocaleDateString('fa-IR')]}
-            submitHandler={submitHandler}>
-                <TextField required 
-                        id="standard-basic" 
-                        label="تاریخچه" 
-                        multiline 
-                        variant="standard"
-                        rows={4}
-                        value={HistoryInf.description}
-                        onChange={e=> onChangeHandler(e)}/>
-        </EditModal>
+      
         </>
      );
 }

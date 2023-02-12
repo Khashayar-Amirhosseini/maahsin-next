@@ -19,10 +19,12 @@ const style = {
     direction: 'rtl'
   };
 const EditModal=(props)=>{
-    const {Open}=useSelector(state=>state.EditModalReducer)
+    const {Open,Child,SubmitHandler}=useSelector(state=>state.EditModalReducer)
+    const {HistoryInf}=useSelector((state)=>state.HistoryReducer)
     const dispatch=useDispatch();
     const handleClose =()=> dispatch(closeModal())
-    const {isSaved,errors,success,submitHandler}=props; 
+    const {submitHandler}=props; 
+      
 return(
     <Modal
     open={Open}
@@ -35,11 +37,11 @@ return(
         <Grid container spacing={2}>
             <Grid sx={{width:'100%'}} item>
                 <FormControl sx={{width:'100%'}}>
-                   {props.children}
+                   {Child}
                 </FormControl> 
             </Grid>
             <SubmitFeedBacks/>
-            <SaveButton submitHandler={submitHandler}/>
+            <SaveButton/>
         </Grid>     
     </Box>
   </Modal>

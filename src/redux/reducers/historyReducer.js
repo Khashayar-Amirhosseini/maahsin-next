@@ -1,6 +1,6 @@
 const { historyActionType } = require("../types");
 const HistoryInitialState={
-    HistoryInf:{ss:"sdfsdf"}
+    HistoryInf:{}
 };
 const HistoryReducer=(state=HistoryInitialState,action)=>{
     switch (action.type){

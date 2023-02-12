@@ -18,7 +18,7 @@ import History from './history';
 
 const About = (props) => {
     const {doctors}=useSelector((state)=>state.DoctorReducer);
-    
+    const {User}=useSelector(state=>state.UserReducer)
     return (
         <>
             <div  className="main_title">
@@ -48,7 +48,7 @@ const About = (props) => {
                             <Typography>کادر پزشکی</Typography>
                     </AccordionSummary>
                         <AccordionDetails key={uuidv4()}>
-                            {doctors.map(doc=><Doctrors key={uuidv4()} doctorInfo={doc}/>)}
+                            {doctors.map(doc=><Doctrors user={User} key={uuidv4()} doctorInfo={doc}/>)}
                         </AccordionDetails>
                     </Accordion>         
             </Grid>

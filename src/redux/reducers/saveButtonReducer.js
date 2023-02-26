@@ -8,14 +8,15 @@ const initialState = {
 const SaveButtonReducer=(state=initialState,action)=>{
     switch (action.type){
         case saveButtonActionType.IS_CHANGED:{
-            return{...state,isChanged:action.isChanged}
+            return{...state,IsChanged:action.isChanged}
         }
         case saveButtonActionType.IS_SENDING:{
-            return{...state,isSending:action.isSending}
+            return{...state,IsSending:action.isSending}
         }
         default:{
             return state
         }
     }
+    
 }
 export default SaveButtonReducer;

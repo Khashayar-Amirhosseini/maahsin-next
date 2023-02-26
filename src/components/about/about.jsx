@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Doctrors from '../doctor/doctor';
 import { addDoctors } from '@/redux/types';
 import { v4 as uuidv4 } from 'uuid';
-import History from './history';
+import History from './history/history';
 
 
 

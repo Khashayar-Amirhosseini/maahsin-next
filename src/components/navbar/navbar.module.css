@@ -45,6 +45,14 @@
     top: 20px;
    
   }
+  @media screen and (max-width:600px){
+    .LogoutButton{
+      display: none;
+    }
+    .userProfile{
+      display: none;
+    }
+  }
   .LogoutButton path:hover{
     color: #f7d67d;
     cursor: pointer;

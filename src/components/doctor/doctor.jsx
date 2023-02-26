@@ -17,33 +17,19 @@ import { isChanged } from "@/redux/action/saveButtonAction";
 const Doctrors = (props) => {
     const {user,doctorInfo}=props;
     const dispatch=useDispatch()
-    const DoctorsubmitHandler=(
-    )=>{};
-    
-    const child=
-        <TextField required 
-        id="standard-basic" 
-        label="شسیبلیسبل" 
-        multiline 
-        variant="standard"
-        rows={4}
-        onChange={e=> dispatch(isChanged(true))}/>
     return(
         <>
         <Grid  container item md={6}>
-            <Grid   item md={6}>
-                <img  src={doctorInfo.image}/>
+            <Grid container sx={{flexDirection:'column',alignItems:'center'}}  item md={6} style={{padding:"10px"}}>
+                <img style={{width:200}} src={doctorInfo.image}/>
             </Grid>
             <Grid item md={6}>
                 <Typography variant="h4" className={style.h4}>{doctorInfo.name} {doctorInfo.family}</Typography>
                 <Typography  >شماره پروانه: {doctorInfo.medicalId}</Typography>
                 <Typography  >{doctorInfo.about}</Typography>
-                <EditButton user={user}  submitHandler={DoctorsubmitHandler} onClick={e=>{dispatch(openModal(child));dispatch(updateFeedBack({errors:[],success:[]}))}} />
+                <EditButton user={user}   onClick={e=>{dispatch(openModal("doctor",doctorInfo.id));dispatch(updateFeedBack({errors:[],success:[]}))}} />
             </Grid>
         </Grid>
-        <EditModal>
-            
-        </EditModal>
         </>
     )
 }

@@ -33,7 +33,7 @@ const Header = (props) => {
             <></>
             }
             <div className={style.top_menu}>
-                <Grid container>
+                <Grid container sx={{justifyContent:'space-around'}}>
                     <Grid item sm={6}>
                     <div className={style.s1}>
                         <div className={style.socials}>

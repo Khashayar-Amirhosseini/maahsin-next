@@ -3,13 +3,13 @@ import { editModalActionType } from "../types"
 
 const initialState={
     Open:false,
-    Child:null,
-    SubmitHandler:null
+    SubmitHandler:null,
+    Index:0
 }
 const EditModelReducer = (state=initialState,action) => {
     switch(action.type){ 
         case editModalActionType.OPEN:{
-            return {...state,Open:true,Child:action.child,SubmitHandler:action.submitHandler}
+            return {...state,Open:true,SubmitHandler:action.submitHandler,Index:action.index}
         }
         case editModalActionType.CLOSE:{
             return{...state,Open:false}

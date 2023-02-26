@@ -133,6 +133,13 @@ const NavBar = (props) => {
             }}
           >
             <img className={style.headerPic} src={'img/heading-cream.svg'} />
+              {User.isAuthenticated && (
+                <Grid container sx={{justifyContent: "space-between"}}>
+                    <button style={{ background: 'transparent', borderColor: 'transparent' }}  onClick={props.logout}><PowerSettingsNewOutlinedIcon color='secondary' /></button>
+                    <button style={{ background: 'transparent', borderColor: 'transparent' }} ><AccountCircleOutlinedIcon color='secondary' /></button>
+                </Grid>
+                )}
+            
             {drawer}
           </Drawer>
         </Box>

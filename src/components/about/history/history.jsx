@@ -7,10 +7,10 @@ import HistoryReducer from "@/redux/reducers/historyReducer";
 import axios from "axios";
 import { updateHistory } from "@/redux/action/HistoryAction";
 import * as yup from 'yup';
-import SubmitFeedBacks from "../submitFeedbacks/SubmitFeedBacks";
-import EditButton from "../editButton/EditButton";
-import SaveButton from "../saveButton/SaveButton";
-import EditModal from "../editModal/EditModal";
+import SubmitFeedBacks from "../../submitFeedbacks/SubmitFeedBacks";
+import EditButton from "../../editButton/EditButton";
+import SaveButton from "../../saveButton/SaveButton";
+import EditModal from "../../editModal/EditModal";
 import { openModal } from "@/redux/action/editModelAction";
 import { isChanged, isSending } from "@/redux/action/saveButtonAction";
 import { update, updateFeedBack } from "@/redux/action/submitFeedBackAction";
@@ -21,10 +21,7 @@ const History = () => {
     const {HistoryInf}=useSelector((state)=>state.HistoryReducer)
     const{User}=useSelector(state=>state.UserReducer)
     const [isSaved, setIsSaved]=useState(false)
-    const onChangeHandler=async(e)=>{
-        dispatch(updateHistory({...HistoryInf,description:e.target.value}));
-        dispatch(isChanged(true))
-    }
+    
     
     
     /*const historySubmitHandler= async(e)=>{
@@ -72,7 +69,7 @@ const History = () => {
             <Grid item textAlign={'justify'}>
                 <Typography>{HistoryInf.description}</Typography>
             </Grid>
-            <EditButton user={User} onClick={e=>{dispatch(openModal(child,submitHandler)); dispatch(updateFeedBack({errors:[],success:[]}));}}/>
+            <EditButton user={User} onClick={e=>{dispatch(openModal(submitHandler)); dispatch(updateFeedBack({errors:[],success:[]}));}}/>
         </Grid>
       
         </>
@@ -80,3 +77,4 @@ const History = () => {
 }
  
 export default History;
+

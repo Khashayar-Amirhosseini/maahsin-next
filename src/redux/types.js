@@ -1,7 +1,10 @@
 //////doctor/////////
 export const doctorActionTypes={
-    ADD_DOCTORS:'ADD_DOCTORS'
+    ADD_DOCTORS:'ADD_DOCTORS',
+    REMOVE_DOCTOR:'REMOVE_DOCTOR_DOCTOR',
+    UPDATE_DOCTOR:'UPDATE_DOCTOR'
 };
+
 
 ////////history////////
 export const historyActionType={

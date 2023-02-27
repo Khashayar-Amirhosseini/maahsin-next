@@ -27,7 +27,6 @@ const EditModal = (props) => {
     const changeDoctor = (doctor) => {
         setNewDoctor(doctor)
     }
-    
     const[logInfo,setLogInfo] =useState({user:'ناشناس',date:''} )
 
     useEffect(()=>{

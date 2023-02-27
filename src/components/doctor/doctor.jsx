@@ -13,10 +13,16 @@ import { useDispatch } from "react-redux";
 import { openModal } from "@/redux/action/editModelAction";
 import { updateFeedBack } from "@/redux/action/submitFeedBackAction";
 import { isChanged } from "@/redux/action/saveButtonAction";
+import AddButton from "../addButton/addButton";
+import { addDoctors } from "@/redux/action/doctorAction";
+import imageProfile from './../../assets/img/profile.jpg'
+
 
 const Doctrors = (props) => {
     const {user,doctorInfo}=props;
-    const dispatch=useDispatch()
+    const dispatch=useDispatch();
+    const newDoctor=[{id:0,name:'ناشناس',family:'',medicalId:'',about:'تعریف نشده',date:new Date().valueOf(),user:{family:user.userInf.family},image:imageProfile.src}]
+    
     return(
         <>
         <Grid  container item md={6}>
@@ -27,7 +33,11 @@ const Doctrors = (props) => {
                 <Typography variant="h4" className={style.h4}>{doctorInfo.name} {doctorInfo.family}</Typography>
                 <Typography  >شماره پروانه: {doctorInfo.medicalId}</Typography>
                 <Typography  >{doctorInfo.about}</Typography>
-                <EditButton user={user}   onClick={e=>{dispatch(openModal("doctor",doctorInfo.id));dispatch(updateFeedBack({errors:[],success:[]}))}} />
+                <Grid container >
+                    <EditButton user={user}   onClick={e=>{dispatch(openModal("doctor",doctorInfo.id));dispatch(updateFeedBack({errors:[],success:[]}))}} />
+                    <AddButton user={user} onClick={e=>{dispatch(addDoctors(newDoctor)); dispatch(openModal("doctor",newDoctor[0].id));dispatch(updateFeedBack({errors:[],success:[]}))}} />
+                </Grid>
+                
             </Grid>
         </Grid>
         </>

@@ -12,9 +12,9 @@ const EditButton = (props) => {
     const dispatch = useDispatch();
     return (
         <>
-            <Grid container item>
+            <Grid item>
                 {user.userInf.viewer && (<Grid item>
-                    <Button variant="outlined" color='primary' onClick={onClick} >
+                    <Button style={{padding:0,height:0,width:30}} color='primary' onClick={onClick} >
                         <EditOutlinedIcon onClick={(e) => { dispatch(openModal()); dispatch(updateFeedBack({ errors: [], success: [] })) }} />
                     </Button>
                 </Grid>)}

@@ -48,7 +48,9 @@ const About = (props) => {
                             <Typography>کادر پزشکی</Typography>
                     </AccordionSummary>
                         <AccordionDetails key={uuidv4()}>
+                            <Grid container>
                             {doctors.map(doc=><Doctrors user={User} key={uuidv4()} doctorInfo={doc}/>)}
+                            </Grid>
                         </AccordionDetails>
                     </Accordion>         
             </Grid>

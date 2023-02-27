@@ -120,6 +120,7 @@ const SaveButton = (props) => {
                     })
                     dispatch(isSending(false))
                     dispatch(isChanged(false))
+                    dispatch(updateFeedBack({errors:[],success:['اطلاعات با موفقیت بارگذاری شد.']}))
                 }
                 catch (e) {
                     if(e.response){
@@ -142,6 +143,7 @@ const SaveButton = (props) => {
                     })
                     dispatch(isSending(false))
                     dispatch(isChanged(false))
+                    dispatch(updateFeedBack({errors:[],success:['اطلاعات با موفقیت بارگذاری شد.']}))
                 }
                 catch (e) {
                     if(e.response){

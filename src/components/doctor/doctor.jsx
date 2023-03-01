@@ -9,23 +9,35 @@ import secondary from '../../../config/theme'
 import style from '../doctor/doctor.module.css'
 import EditButton from "../editButton/EditButton";
 import EditModal from "../editModal/EditModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "@/redux/action/editModelAction";
 import { updateFeedBack } from "@/redux/action/submitFeedBackAction";
 import { isChanged } from "@/redux/action/saveButtonAction";
 import AddButton from "../addButton/addButton";
 import { addDoctors } from "@/redux/action/doctorAction";
 import imageProfile from './../../assets/img/profile.jpg'
+import DeleteButton from "../deleteButton/deleteButton";
 
 
 const Doctrors = (props) => {
     const {user,doctorInfo}=props;
+    const {doctors}=useSelector(state=>state.DoctorReducer);
     const dispatch=useDispatch();
-    const newDoctor=[{id:0,name:'ناشناس',family:'',medicalId:'',about:'تعریف نشده',date:new Date().valueOf(),user:{family:user.userInf.family},image:imageProfile.src}]
+    const newDoctor=[{id:0,name:'ناشناس',family:'',medicalId:'',about:'تعریف نشده',date:new Date().valueOf(),user:{family:user.userInf.family},image:imageProfile.src,state:'active'}];
+    const handleAdd=()=>{
+        const index=doctors.findIndex(d=>d.id==0);
+        console.log(index);
+        if(index<0){
+            console.log(":)");
+            dispatch(addDoctors(newDoctor));
+            dispatch(openModal("doctor",newDoctor[0].id));
+            dispatch(updateFeedBack({errors:[],success:[]}));
+        }
+    }
     
     return(
         <>
-        <Grid  container item md={6}>
+        {(doctorInfo.state==='active'||user.userInf.viewer)&&(<Grid  container item md={6}>
             <Grid container sx={{flexDirection:'column',alignItems:'center'}}  item md={6} style={{padding:"10px"}}>
                 <img style={{width:200}} src={doctorInfo.image}/>
             </Grid>
@@ -35,11 +47,11 @@ const Doctrors = (props) => {
                 <Typography  >{doctorInfo.about}</Typography>
                 <Grid container >
                     <EditButton user={user}   onClick={e=>{dispatch(openModal("doctor",doctorInfo.id));dispatch(updateFeedBack({errors:[],success:[]}))}} />
-                    <AddButton user={user} onClick={e=>{dispatch(addDoctors(newDoctor)); dispatch(openModal("doctor",newDoctor[0].id));dispatch(updateFeedBack({errors:[],success:[]}))}} />
+                    <AddButton user={user} onClick={e=>{handleAdd()}} />
+                    <DeleteButton user={user} entity='doctor' index={doctorInfo.id}  url={`/action/admin/deleteDoctor.do?doctorId=${doctorInfo.id}`}/>
                 </Grid>
-                
             </Grid>
-        </Grid>
+        </Grid>)}
         </>
     )
 }

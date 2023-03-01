@@ -4,8 +4,7 @@ import theme from "config/theme";
 import { useSelector } from "react-redux";
 
 const SubmitFeedBacks = (props) => {
-    const {Errors} = useSelector(state=>state.SubmitFeedBackReducer);
-    const {Success} = useSelector(state=>state.SubmitFeedBackReducer);
+    const {Errors,Success} = useSelector(state=>state.SubmitFeedBackReducer);
     return (
         <Grid item sx={{ width: '100%' }}>
             {Errors.length !== 0 && (
@@ -22,8 +21,8 @@ const SubmitFeedBacks = (props) => {
                 <ul style={{padding:0,textAlign:'center'}}>
                     {Success.map((s) => {
                         return (
-                            <li style={{listStyle:'none'}}>
-                                <Typography style={{ textAlign: 'justify', color: theme.palette.success.main }} variant="span" >{s}</Typography>
+                            <li  key={uuidv4()} style={{listStyle:'none'}}>
+                                <Typography  key={uuidv4()} style={{ textAlign: 'justify', color: theme.palette.success.main }} variant="span" >{s}</Typography>
                             </li> 
                         )
                     }   

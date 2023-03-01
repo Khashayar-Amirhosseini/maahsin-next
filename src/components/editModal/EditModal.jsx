@@ -23,6 +23,7 @@ const EditModal = (props) => {
     const handleClose = () => { dispatch(closeModal()); dispatch(updateFeedBack({ errors: [], success: [] })) }
     ////doctor/////
     const doc = doctors.filter(d => d.id == Index)[0];
+    const userLog=doc.user.family;
     const [newDoctor, setNewDoctor] = useState(doc)
     const changeDoctor = (doctor) => {
         setNewDoctor(doctor)
@@ -36,7 +37,7 @@ const EditModal = (props) => {
                 return 
             }
             case 'doctor': {
-                setLogInfo({ user: doc.user.family, date: new Date((doc.date)).toLocaleDateString('fa-IR') })
+                setLogInfo({ user: userLog, date: new Date((doc.date)).toLocaleDateString('fa-IR') })
                 return 
             }
             default:{
@@ -51,8 +52,8 @@ const EditModal = (props) => {
         <Dialog
             open={Open}
             onClose={handleClose}
-            fullWidth
-            maxWidth
+            fullWidth={true}
+            maxWidth={'lg'}
             sx={{ direction: 'rtl' }}
         >
             <DialogContent >

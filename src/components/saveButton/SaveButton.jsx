@@ -7,6 +7,8 @@ import { isChanged, isSending } from "@/redux/action/saveButtonAction";
 import axios from "axios";
 import { updateHistory } from "@/redux/action/HistoryAction";
 import { useEffect } from "react";
+import { addDoctors, removeDoctor, updateDoctor } from "@/redux/action/doctorAction";
+import { openModal } from "@/redux/action/editModelAction";
 
 
 const SaveButton = (props) => {
@@ -77,7 +79,6 @@ const SaveButton = (props) => {
     })
     /////////////////////////////
     const saveButtonSubmitHandeler=async(e)=>{  
-        
         switch (SubmitHandler){
             case('history'):{
                return historySubmitHandler(e)
@@ -88,10 +89,17 @@ const SaveButton = (props) => {
                 doctors[index].family=newDoctor.family;
                 doctors[index].medicalId=newDoctor.medicalId;
                 doctors[index].about=newDoctor.about;
-                dispatch(updateHistory(doctors))
+                dispatch(updateDoctor(doctors))
                 const updateUrl='/action/doctor/updateDoctor.do'
                 const saveUrl='/action/doctor/saveDoctor.do'
-              return submitHandler(e,doctors[index],updateUrl,saveUrl)
+                const response= await submitHandler(e,doctors[index],updateUrl,saveUrl)
+                if(doctors[index].id===0&& response){
+                doctors[index].id=response.id;
+                dispatch(removeDoctor(0));
+                //dispatch(addDoctors([doctors[index]));
+                dispatch(dispatch(openModal("doctor",doctors[index].id)))
+                }
+                return
             }
         }
     }
@@ -121,6 +129,7 @@ const SaveButton = (props) => {
                     dispatch(isSending(false))
                     dispatch(isChanged(false))
                     dispatch(updateFeedBack({errors:[],success:['اطلاعات با موفقیت بارگذاری شد.']}))
+                    return response.date;
                 }
                 catch (e) {
                     if(e.response){
@@ -144,6 +153,7 @@ const SaveButton = (props) => {
                     dispatch(isSending(false))
                     dispatch(isChanged(false))
                     dispatch(updateFeedBack({errors:[],success:['اطلاعات با موفقیت بارگذاری شد.']}))
+                    return response.data;
                 }
                 catch (e) {
                     if(e.response){
@@ -153,7 +163,7 @@ const SaveButton = (props) => {
                         else{
                             dispatch(updateFeedBack({errors:["مشکل در سرور پیش اومده"],success:[]}))
                     }
-                    dispatch(isSending(false)) 
+                    dispatch(isSending(false))
                 }
             }
 

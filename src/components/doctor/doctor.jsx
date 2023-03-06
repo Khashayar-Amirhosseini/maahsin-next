@@ -17,24 +17,22 @@ import AddButton from "../addButton/addButton";
 import { addDoctors } from "@/redux/action/doctorAction";
 import imageProfile from './../../assets/img/profile.jpg'
 import DeleteButton from "../deleteButton/deleteButton";
+import { updateEntity } from "@/redux/action/entityAction";
 
 
 const Doctrors = (props) => {
     const {user,doctorInfo}=props;
     const {doctors}=useSelector(state=>state.DoctorReducer);
     const dispatch=useDispatch();
-    const newDoctor=[{id:0,name:'ناشناس',family:'',medicalId:'',about:'تعریف نشده',date:new Date().valueOf(),user:{family:user.userInf.family},image:imageProfile.src,state:'active'}];
+   const newDoctor=[{id:0,name:'ناشناس',family:'',medicalId:'',about:'تعریف نشده',date:new Date().valueOf(),user:{family:user.userInf.family},image:imageProfile.src,state:'active'}];
     const handleAdd=()=>{
         const index=doctors.findIndex(d=>d.id==0);
-        console.log(index);
         if(index<0){
-            console.log(":)");
             dispatch(addDoctors(newDoctor));
             dispatch(openModal("doctor",newDoctor[0].id));
             dispatch(updateFeedBack({errors:[],success:[]}));
         }
     }
-    
     return(
         <>
         {(doctorInfo.state==='active'||user.userInf.viewer)&&(<Grid  container item md={6}>
@@ -46,7 +44,7 @@ const Doctrors = (props) => {
                 <Typography  >شماره پروانه: {doctorInfo.medicalId}</Typography>
                 <Typography  >{doctorInfo.about}</Typography>
                 <Grid container >
-                    <EditButton user={user}   onClick={e=>{dispatch(openModal("doctor",doctorInfo.id));dispatch(updateFeedBack({errors:[],success:[]}))}} />
+                    <EditButton user={user} onClick={e=>{dispatch(openModal("doctor",doctorInfo.id));dispatch(updateEntity(doctors));dispatch(updateFeedBack({errors:[],success:[]}))}} />
                     <AddButton user={user} onClick={e=>{handleAdd()}} />
                     <DeleteButton user={user} entity='doctor' index={doctorInfo.id}  url={`/action/admin/deleteDoctor.do?doctorId=${doctorInfo.id}`}/>
                 </Grid>

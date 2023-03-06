@@ -18,15 +18,16 @@ const { Children, useState } = require("react");
 const EditModal = (props) => {
     const { Open, SubmitHandler, Index } = useSelector(state => state.EditModalReducer)
     const { HistoryInf } = useSelector((state) => state.HistoryReducer)
-    const { doctors } = useSelector(state => state.DoctorReducer);
+    const {Entity}=useSelector(state=>state.EntityReducer)
+    console.log(Entity);
     const dispatch = useDispatch();
     const handleClose = () => { dispatch(closeModal()); dispatch(updateFeedBack({ errors: [], success: [] })) }
-    ////doctor/////
-    const doc = doctors.filter(d => d.id == Index)[0];
-    const userLog=doc.user.family;
-    const [newDoctor, setNewDoctor] = useState(doc)
-    const changeDoctor = (doctor) => {
-        setNewDoctor(doctor)
+  
+    const obj=Entity.filter(e=>e.id===Index)[0];
+    const userLog=obj.user.family;
+    const [newObj,setNewObj]=useState(obj)
+    const changeObj=(obj)=>{
+        setNewObj(obj)
     }
     const[logInfo,setLogInfo] =useState({user:'ناشناس',date:''} )
 
@@ -37,7 +38,7 @@ const EditModal = (props) => {
                 return 
             }
             case 'doctor': {
-                setLogInfo({ user: userLog, date: new Date((doc.date)).toLocaleDateString('fa-IR') })
+                setLogInfo({ user: userLog, date: new Date((obj.date)).toLocaleDateString('fa-IR') })
                 return 
             }
             default:{
@@ -46,7 +47,6 @@ const EditModal = (props) => {
             }
         }
     },[SubmitHandler])
-    
     
     return (
         <Dialog
@@ -62,7 +62,7 @@ const EditModal = (props) => {
                     <Grid sx={{ width: '100%' }} item>
                         <FormControl sx={{ width: '100%' }}>
                             {SubmitHandler === 'history' && (<HistoryForm />)}
-                            {SubmitHandler === 'doctor' && (<DoctorForm doctor={doc} changeDoctor={changeDoctor} />)}
+                            {SubmitHandler === 'doctor' && (<DoctorForm doctor={obj} changeDoctor={changeObj} />)}
                         </FormControl>
                         <Grid container style={{flexDirection:'column',alignContent:'center'}}>
                         <Typography textAlign={"center"} color={theme.palette.success.main}>{logInfo.user}</Typography>
@@ -73,7 +73,7 @@ const EditModal = (props) => {
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <SaveButton newDoctor={newDoctor ? newDoctor : doc} />
+                <SaveButton newObj={newObj ? newObj : obj} />
             </DialogActions>
         </Dialog>
     )

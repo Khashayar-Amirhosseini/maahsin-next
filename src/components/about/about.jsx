@@ -10,14 +10,12 @@ import Doctrors from '../doctor/doctor';
 import { addDoctors } from '@/redux/types';
 import { v4 as uuidv4 } from 'uuid';
 import History from './history/history';
-
-
-
-
+import Goal from './goals/goal'
 
 
 const About = (props) => {
     const {doctors}=useSelector((state)=>state.DoctorReducer);
+    const {Goals}=useSelector(state=>state.GoalReducer)
     const {User}=useSelector(state=>state.UserReducer)
     return (
         <>
@@ -49,7 +47,21 @@ const About = (props) => {
                     </AccordionSummary>
                         <AccordionDetails key={uuidv4()}>
                             <Grid container>
-                            {doctors.map(doc=><Doctrors user={User} key={uuidv4()} doctorInfo={doc}/>)}
+                            {doctors.map(doc=><Doctrors user={User} key={uuidv4()} doctors={doctors} doctorInfo={doc}/>)}
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion key={uuidv4()} defaultExpanded={false}>
+                        <AccordionSummary
+                        key={uuidv4()}
+                        expandIcon={<ExpandMoreIcon/>}                
+                        aria-controls="panel2a-content"
+                        id="panel1a-header">
+                            <Typography>اهداف</Typography>
+                    </AccordionSummary>
+                        <AccordionDetails key={uuidv4()}>
+                            <Grid container spacing={1}>
+                            {Goals.map(goal=><Goal user={User} key={uuidv4()} goalInfo={goal}/>)}
                             </Grid>
                         </AccordionDetails>
                     </Accordion>         

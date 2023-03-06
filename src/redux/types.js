@@ -3,7 +3,6 @@ export const doctorActionTypes={
     ADD_DOCTORS:'ADD_DOCTORS',
     REMOVE_DOCTOR:'REMOVE_DOCTOR',
     UPDATE_DOCTOR:'UPDATE_DOCTOR',
-    REMOVE_ALL:'REMOVE_ALL'
 };
 
 
@@ -33,4 +32,16 @@ export const saveButtonActionType={
 
 export const submitFeedBackActionType={
     UPDATE:'UPDATE'
+}
+
+///goals////
+export const goalsActoinType={
+    ADD_GOALS:'ADD_GOALS',
+    REMOVE_GOAL:'REMOVE_GOAL',
+    UPDATE_GOAL:'UPDATE_GOAL'
+}
+
+////entity////
+export const entityActionType={
+    UPDATE:'UPDATE_ENTITY'
 }

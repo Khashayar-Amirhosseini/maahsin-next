@@ -7,21 +7,19 @@ import EditModal from "../editModal/EditModal";
 import { useState } from "react";
 
 const EditButton = (props) => {
-    const { user, onClick } = props;
-    const [isSaved, setIsSaved]=useState(false);
-    const dispatch = useDispatch();
-    const {Open}=useSelector(state=>state.EditModalReducer)
+    const { user, onClick,entity } = props;
+    const {Open}=useSelector(state=>state.EditModalReducer);
     return (
         <>
             <Grid item>
                 {user.userInf.viewer && (
                 <Grid item>
                     <Button style={{padding:0,height:0,width:30}} color='primary' onClick={onClick} >
-                        <EditOutlinedIcon onClick={(e) => { dispatch(openModal()); dispatch(updateFeedBack({ errors: [], success: [] })) }} />
+                        <EditOutlinedIcon/>
                     </Button>
                 </Grid>)}
             </Grid>
-            {Open &&(<EditModal  isSaved={isSaved}/>)}
+            {Open &&(<EditModal entity={entity}/>)}
         </>
 
     );

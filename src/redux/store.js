@@ -12,11 +12,13 @@ import EditModalReducer from "./reducers/editModalReducer"
 import SaveButtonReducer from "./reducers/saveButtonReducer"
 import { next } from "stylis";
 import SubmitFeedBackReducer from "./reducers/submitFeedBackReducer";
+import GoalReducer from "./reducers/goalReducer";
+import EntityReducer from "./reducers/entityReducer";
 
 const combinedReducer= combineReducers({
  DoctorReducer,HistoryReducer,AddressReducer,
  UserReducer,EditModalReducer,SaveButtonReducer,
- SubmitFeedBackReducer
+ SubmitFeedBackReducer,GoalReducer,EntityReducer
 })
 const middleware = [thunk];
 const initalState = {};
@@ -31,10 +33,12 @@ const uniqueState=(obj)=>{
 const makeStore = () => store;
 const masterReducer=(state,action)=>{
   if(action.type===HYDRATE){
+    console.log(state);
     const nextState={
       ...state,
       DoctorReducer:{doctors:[...uniqueState([...action.payload.DoctorReducer.doctors,...state.DoctorReducer.doctors])]},
       HistoryReducer:{HistoryInf:action.payload.HistoryReducer.HistoryInf},
+      GoalReducer:{Goals:[...uniqueState([...action.payload.GoalReducer.Goals,...state.GoalReducer.Goals])]}
     }
     return nextState 
   }

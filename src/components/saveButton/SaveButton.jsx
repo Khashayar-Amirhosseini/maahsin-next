@@ -8,7 +8,9 @@ import axios from "axios";
 import { updateHistory } from "@/redux/action/HistoryAction";
 import { useEffect } from "react";
 import { addDoctors, removeDoctor, updateDoctor } from "@/redux/action/doctorAction";
+import { addPolicy, removePolicy, updatePolicy } from "@/redux/action/policyAction";
 import { openModal } from "@/redux/action/editModelAction";
+import { updatGoals } from "@/redux/action/goalAction";
 
 
 const SaveButton = (props) => {
@@ -17,11 +19,8 @@ const SaveButton = (props) => {
     const {Address}=useSelector(state=>state.AddressReducer);
     const {HistoryInf}=useSelector(state=>state.HistoryReducer);
     const {User}=useSelector(state=>state.UserReducer);
+    const{newObj}=props;
     const dispatch=useDispatch();
-    //////////history////////////////////////
-    let schema=yup.object().shape({
-        description:yup.string().required('فیلد تاریخچه رو نباید خالی بذاری.')
-    })
     const validate=async()=>{
         try{
             switch(SubmitHandler){
@@ -30,15 +29,26 @@ const SaveButton = (props) => {
                     return result
                 }
                 case 'doctor':{
-                    return await doctorSchema.validate(newDoctor,{abortEarly:false})
+                    return await doctorSchema.validate(newObj,{abortEarly:false})
                 }
+                case 'goal':{
+                    return await goalSchema.validate(newObj,{abortEarly:false})
+                }
+                case 'policy':{
+                    return await policySchema.validate(newObj,{abortEarly:false})
+                }   
             }
         }
         catch(error){
-            dispatch(updateFeedBack({errors:[error.errors],success:[]})) 
+            dispatch(updateFeedBack({errors:error.errors,success:[]})) 
         }
        
     }
+    //////////history////////////////////////
+    let schema=yup.object().shape({
+        description:yup.string().required('فیلد تاریخچه رو نباید خالی بذاری.')
+    })
+    
     const historySubmitHandler= async(e)=>{
        dispatch(updateFeedBack({errors:[],success:[]}))
         e.preventDefault();
@@ -66,16 +76,24 @@ const SaveButton = (props) => {
             dispatch(isSending(false)) 
         } 
     } 
-
-
     ////////////////doctor//////
     const {doctors}=useSelector(state=>state.DoctorReducer);
-    const{newDoctor}=props;
     let doctorSchema = yup.object().shape({
         name: yup.string().required('فیلد نام دکتر رو نباید خالی بذاری.'),
         family: yup.string().required('فیلد نام خانوادگی دکتر رو نباید خالی بذاری.'),
         medicalId: yup.string().required('فیلد شماره پروانه پزشکی دکتر رو نباید خالی بذاری.'),
         about: yup.string().required('در مورد دکتر یکم بنویس باهم اشنا شیم.'),
+    })
+    /////////goal/////////////
+    const {Goals}=useSelector(state=>state.GoalReducer);
+    let goalSchema = yup.object().shape({
+        description: yup.string().required('فیلد نام هدف را نباید خالی بزاری.'),
+    })
+
+    /////policy///////
+    const {Policies}=useSelector(state=>state.PolicyReducer);
+    let policySchema = yup.object().shape({
+        description: yup.string().required('فیلد شرح خطی مشی را نباید خالی بزاری.'),
     })
     /////////////////////////////
     const saveButtonSubmitHandeler=async(e)=>{  
@@ -84,6 +102,7 @@ const SaveButton = (props) => {
                return historySubmitHandler(e)
             }
             case('doctor'):{
+                const newDoctor=newObj
                 const index=doctors.findIndex(d=>d.id==newDoctor.id)
                 doctors[index].name=newDoctor.name;
                 doctors[index].family=newDoctor.family;
@@ -97,24 +116,57 @@ const SaveButton = (props) => {
                 doctors[index].id=response.id;
                 dispatch(removeDoctor(0));
                 //dispatch(addDoctors([doctors[index]));
-                dispatch(dispatch(openModal("doctor",doctors[index].id)))
+                dispatch(dispatch(openModal("doctor",doctors[index].id)));
                 }
                 return
+            }
+            case ('goal'):{
+                const newGoal=newObj;
+                const index=Goals.findIndex(d=>d.id==newGoal.id)
+                Goals[index].description=newGoal.description;
+                dispatch(updatGoals(Goals[index]))
+                const updateUrl='/action/goal/updateGoal.do'
+                const saveUrl='/action/goal/saveGoal.do'
+                const response= await submitHandler(e,Goals[index],updateUrl,saveUrl)
+                if(Goals[index].id===0&& response){
+                Goals[index].id=response.id;
+                dispatch(removeDoctor(0));
+                //dispatch(addDoctors([doctors[index]));
+                dispatch(dispatch(openModal("goal",Goals[index].id)))
+                } 
+                return
+            }
+            case 'policy':{
+                const newPolicy=newObj;
+                const index=Policies.findIndex(d=>d.id==newPolicy.id)
+                Policies[index].description=newPolicy.description;
+                dispatch(updatePolicy(Policies[index]))
+                const updateUrl='/action/policy/updatePolicy.do?'
+                const saveUrl='/action/policy/savePolicy.do?'
+                const response= await submitHandler(e,Policies[index],updateUrl,saveUrl)
+                if(Policies[index].id===0&& response){
+                Policies[index].id=response.id;
+                dispatch(removePolicy(0));
+                //dispatch(addDoctors([doctors[index]));
+                dispatch(dispatch(openModal("policy",Policies[index].id)))
+                } 
             }
         }
     }
     const submitHandler = async (e,object,updateUrl,saveUrl) => {
         dispatch(updateFeedBack({errors:[],success:[]}))
-        const result = await validate();
+        const result = await validate(object);
         const formData = new FormData;
         if (result&&IsChanged) {
+            console.log(object);
             dispatch(isSending(true))
             for (const i in object){
             formData.append(i, result[i]);
             }
-            !formData.get('file')&&(formData.append('file',new File([""], "filename")))
+            !formData.get('file')&&(formData.append('file',new File([""],"filename")))
             formData.delete('date');
-            formData.delete('user')
+            formData.delete('user');
+            formData.delete('image')
             //formData.append("file", (object.file===undefined)?new File([""], "filename"):selectedFile);
             formData.append("userId", User.userInf.id)
             if (result.id !== 0) {

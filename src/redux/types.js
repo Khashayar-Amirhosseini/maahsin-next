@@ -45,3 +45,10 @@ export const goalsActoinType={
 export const entityActionType={
     UPDATE:'UPDATE_ENTITY'
 }
+
+////policies////
+export const policyActionType={
+    ADD_POLICY:'ADD_POLICY',
+    REMOVE_POLICY:'REMOVE_POLICY',
+    UPDATE_POLICY:'UPDATE_POLICY'
+}

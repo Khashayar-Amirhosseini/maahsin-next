@@ -22,36 +22,6 @@ const History = () => {
     const{User}=useSelector(state=>state.UserReducer)
     const [isSaved, setIsSaved]=useState(false)
     
-    
-    
-    /*const historySubmitHandler= async(e)=>{
-        console.log(HistoryInf.description)
-        dispatch(updateFeedBack({errors:[],success:[]}))
-        e.preventDefault();
-        const result=await validate();
-        if(result&&!isSaved){
-        dispatch(isSending(true))  
-            try{
-                const response=await axios({
-                method: "get",
-                url: `${Address}/action/history/historySave.do?description=${HistoryInf.description}&userId=${User.userInf.id}`,
-                headers:{'Access-Token':`${User.token}`}
-                }) 
-                dispatch(isChanged(false))
-                dispatch(updateFeedBack({errors:[],success:[User.userInf.family,new Date((HistoryInf.date)).toLocaleDateString('fa-IR')]}))
-            }
-            catch(e){
-                if(e.response){
-                if(e.response.status===700){
-                    dispatch(updateFeedBack({errors:["دسترسی مورد نیاز فراهم نشده است."],success:[]}))
-                }}
-                else{
-                    dispatch(updateFeedBack({errors:["مشکل در سرور پیش اومده"],success:[]}))
-                }              
-            }
-            dispatch(isSending(false))   
-        }  
-    }*/
     const child=
     <TextField required 
         id="standard-basic" 
@@ -69,7 +39,7 @@ const History = () => {
             <Grid item textAlign={'justify'}>
                 <Typography>{HistoryInf.description}</Typography>
             </Grid>
-            <EditButton user={User} onClick={e=>{dispatch(openModal(submitHandler)); dispatch(updateFeedBack({errors:[],success:[]}));}}/>
+            <EditButton user={User} onClick={e=>{dispatch(openModal(submitHandler));dispatch(updateFeedBack({errors:[],success:[]}));dispatch(isSending(false))}}/>
         </Grid>
       
         </>

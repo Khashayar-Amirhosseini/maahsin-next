@@ -8,7 +8,6 @@ import { updateFeedBack } from "@/redux/action/submitFeedBackAction";
 
 const AddButton = (props) => {
     const {user,onClick}=props
-    const [isSaved, setIsSaved]=useState(false);
     const dispatch=useDispatch()
     const {Open}=useSelector(state=>state.EditModalReducer)
     return (
@@ -21,7 +20,7 @@ const AddButton = (props) => {
                     </Button>
                 </Grid>)}
         </Grid>
-        {Open &&(<EditModal  isSaved={isSaved}/>)}
+        {Open &&(<EditModal/>)}
         </>
       );
 }

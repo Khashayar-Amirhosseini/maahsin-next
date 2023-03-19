@@ -9,7 +9,7 @@ import SubmitFeedBacks from "../submitFeedbacks/SubmitFeedBacks";
 import axios from "axios";
 
 const DeleteButton = (props) => {
-    const { user, url,index,entity } = props;
+    const { user, url,index,entity ,onDelete} = props;
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const[isSuccessful,setIsSuccessful]=useState(false)
@@ -19,18 +19,12 @@ const DeleteButton = (props) => {
     const handleClickOpen = () => {
         setOpen(true);
         dispatch(updateFeedBack({errors:[],success:[]}))
+        dispatch(isSending(false))
     };
 
     const handleClose = () => {
         setOpen(false);
-        if(isSuccessful){
-            switch(entity){
-                case 'doctor':{
-                    dispatch(removeDoctor(index))
-                    setIsSuccessful(false)
-                }
-            }
-        }
+        setIsSuccessful(false)
     };
     const handleAccept=async()=>{
         dispatch(isSending(true))
@@ -41,20 +35,15 @@ const DeleteButton = (props) => {
                     headers: { "enctype": "multipart/form-data", 'Access-Token':`${user.token}` },
                 })
                 if(response.status==200){
-                switch(entity){
-                    case 'doctor':{ 
                         dispatch(isSending(false))
                         dispatch(updateFeedBack({errors:[],success:['اطلاعات با موفقیت بارگذاری شد.']}))
-                        setIsSuccessful(true)
-                        return
-                    }
-                } 
-                }
-                
+                        onDelete(index)
+                        setIsSuccessful(true) 
+                }         
         }
         catch (e) {
-            console.log(e);
                if(e.response){
+                     dispatch(isSending(false))
                    if(e.response.status===700){
                     dispatch(updateFeedBack({errors:["دسترسی مورد نیاز فراهم نشده است."],success:[]}))
                    }}

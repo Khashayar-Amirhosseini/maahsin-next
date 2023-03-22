@@ -11,6 +11,8 @@ import { addDoctors, removeDoctor, updateDoctor } from "@/redux/action/doctorAct
 import { addPolicy, removePolicy, updatePolicy } from "@/redux/action/policyAction";
 import { openModal } from "@/redux/action/editModelAction";
 import { updatGoals } from "@/redux/action/goalAction";
+import { removeAcheivement, updatAcheivements } from "@/redux/action/achievementAction";
+import { removePicture } from "@/redux/action/pictureAction";
 
 
 const SaveButton = (props) => {
@@ -36,7 +38,10 @@ const SaveButton = (props) => {
                 }
                 case 'policy':{
                     return await policySchema.validate(newObj,{abortEarly:false})
-                }   
+                }
+                case 'acheivement':{
+                    return await acheivmentSchema.validate(newObj,{abortEarly:false})
+                }  
             }
         }
         catch(error){
@@ -95,6 +100,14 @@ const SaveButton = (props) => {
     let policySchema = yup.object().shape({
         description: yup.string().required('فیلد شرح خطی مشی را نباید خالی بزاری.'),
     })
+
+    /////acheivement///////
+    const {Acheivements}=useSelector(state=>state.AcheivementReducer);
+    let acheivmentSchema = yup.object().shape({
+        description: yup.string().required('فیلد شرح خطی مشی را نباید خالی بزاری.'),
+    })
+    /////picture/////
+    const {Pictures}=useSelector(state=>state.PictureReducer)
     /////////////////////////////
     const saveButtonSubmitHandeler=async(e)=>{  
         switch (SubmitHandler){
@@ -149,7 +162,37 @@ const SaveButton = (props) => {
                 dispatch(removePolicy(0));
                 //dispatch(addDoctors([doctors[index]));
                 dispatch(dispatch(openModal("policy",Policies[index].id)))
-                } 
+                }
+                return 
+            }
+            case 'acheivement':{
+                const newAcheivement=newObj;
+                const index=Acheivements.findIndex(d=>d.id==newAcheivement.id)
+                Acheivements[index].description=newAcheivement.description;
+                dispatch(updatAcheivements(Acheivements[index]))
+                const updateUrl='/action/achievement/achievementUpdate.do?'
+                const saveUrl='/action/achievement/achievementSave.do?'
+                const response= await submitHandler(e,Policies[index],updateUrl,saveUrl)
+                if(Acheivements[index].id===0&& response){
+                Acheivements[index].id=response.id;
+                dispatch(removeAcheivement(0));
+                //dispatch(addDoctors([doctors[index]));
+                dispatch(dispatch(openModal("acheivement",Acheivements[index].id)))
+                }
+                return
+            }
+            case 'picture':{
+                const newPicture=newObj;
+                const index=Pictures.findIndex(d=>d.id===newPicture.id)
+                const updateUrl=''
+                const saveUrl='/action/picture/savePicture.do'
+                const response= await submitHandler(e,Pictures[index],updateUrl,saveUrl)
+                if(Pictures[index].id===0&& response){
+                Pictures[index].id=response.id;
+                dispatch(removePicture(0));
+                //dispatch(addDoctors([doctors[index]));
+                dispatch(dispatch(openModal("picture",Pictures[index].id)))}
+                return
             }
         }
     }

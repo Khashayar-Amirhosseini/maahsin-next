@@ -12,13 +12,18 @@ import { v4 as uuidv4 } from 'uuid';
 import History from './history/history';
 import Goal from './goals/goal'
 import Policy from './policy/policy';
+import Acheivement from './acheivements/Acheivement';
+
 
 
 const About = (props) => {
     const {doctors}=useSelector((state)=>state.DoctorReducer);
     const {Goals}=useSelector(state=>state.GoalReducer);
     const {User}=useSelector(state=>state.UserReducer);
-    const {Policies}=useSelector(state=>state.PolicyReducer)
+    const {Policies}=useSelector(state=>state.PolicyReducer);
+    const {Acheivements}=useSelector(state=>state.AcheivementReducer);
+    const {Pictures}=useSelector(state=>state.PictureReducer);
+    console.log(Acheivements);
     return (
         <>
             <div  className="main_title">
@@ -74,11 +79,27 @@ const About = (props) => {
                         aria-controls="panel2a-content"
                         id="panel1a-header">
                             <Typography>خطی مشی</Typography>
-                    </AccordionSummary>
+                        </AccordionSummary>
                         <AccordionDetails key={uuidv4()}>
                             <Grid container spacing={1}>
                                 <ul style={{listStyle:'none'}}>
                                     {Policies.map(policy=><Policy user={User} key={uuidv4()} policyInfo={policy}/>)}
+                                </ul>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>   
+                    <Accordion key={uuidv4()} defaultExpanded={false}>
+                        <AccordionSummary
+                        key={uuidv4()}
+                        expandIcon={<ExpandMoreIcon/>}                
+                        aria-controls="panel2a-content"
+                        id="panel1a-header">
+                            <Typography>دستاوردها</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails key={uuidv4()}>
+                            <Grid container spacing={1}>
+                                <ul style={{listStyle:'none'}}>
+                                    {Acheivements.map(achievement=><Acheivement user={User} key={uuidv4()} acheivementInfo={achievement}/>)}
                                 </ul>
                             </Grid>
                         </AccordionDetails>

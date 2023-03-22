@@ -1,7 +1,9 @@
 import About from "@/components/about/about";
+import { addAcheivements } from "@/redux/action/achievementAction";
 import { addDoctors } from "@/redux/action/doctorAction";
 import { addGoals } from "@/redux/action/goalAction";
 import { updateHistory } from "@/redux/action/HistoryAction";
+import { addPictures } from "@/redux/action/pictureAction";
 import { addPolicy } from "@/redux/action/policyAction";
 import { store, wrapper } from "@/redux/store";
 import axios from "axios";
@@ -21,5 +23,6 @@ export const getServerSideProps= wrapper.getServerSideProps((store)=> async()=>{
   await axios.get(`${Address}/action/guest/findAllDoctors.do?`).then(res=>store.dispatch(addDoctors(res.data)))
   await axios.get(`${Address}/action/guest/findAllGoals.do?`).then(res=>store.dispatch(addGoals(res.data)))
   await axios.get(`${Address}/action/guest/findAllPolicies.do?`).then(res=>store.dispatch(addPolicy(res.data)))
+  await axios.get(`${Address}/action/guest/findAllAchievement.do?`).then(res=>store.dispatch(addAcheivements(res.data)))
 })
 

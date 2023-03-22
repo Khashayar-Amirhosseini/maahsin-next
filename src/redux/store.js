@@ -15,12 +15,15 @@ import SubmitFeedBackReducer from "./reducers/submitFeedBackReducer";
 import GoalReducer from "./reducers/goalReducer";
 import EntityReducer from "./reducers/entityReducer";
 import PolicyReducer from "./reducers/policyReducer";
+import PictureReducer from "./reducers/pictureReducer";
+import AcheivementReducer from "./reducers/acheivementReducer";
 
 const combinedReducer= combineReducers({
  DoctorReducer,HistoryReducer,AddressReducer,
  UserReducer,EditModalReducer,SaveButtonReducer,
- SubmitFeedBackReducer,GoalReducer,EntityReducer,PolicyReducer
+ SubmitFeedBackReducer,GoalReducer,EntityReducer,PolicyReducer,AcheivementReducer,PictureReducer
 })
+
 
 const middleware = [thunk];
 const initalState = {};
@@ -40,7 +43,9 @@ const masterReducer=(state,action)=>{
       DoctorReducer:{doctors:[...uniqueState([...action.payload.DoctorReducer.doctors,...state.DoctorReducer.doctors])]},
       HistoryReducer:{HistoryInf:action.payload.HistoryReducer.HistoryInf},
       GoalReducer:{Goals:[...uniqueState([...action.payload.GoalReducer.Goals,...state.GoalReducer.Goals])]},
-      PolicyReducer:{Policies:[...uniqueState([...action.payload.PolicyReducer.Policies,...state.PolicyReducer.Policies])]}
+      PolicyReducer:{Policies:[...uniqueState([...action.payload.PolicyReducer.Policies,...state.PolicyReducer.Policies])]},
+      AcheivementReducer:{Acheivements:[...uniqueState([...action.payload.AcheivementReducer.Acheivements,...state.AcheivementReducer.Acheivements])]},
+      PictureReducer:{Pictures:[...uniqueState([...action.payload.PictureReducer.Pictures,...state.PictureReducer.Pictures])]}
     }
     return nextState 
   }

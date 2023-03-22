@@ -52,3 +52,16 @@ export const policyActionType={
     REMOVE_POLICY:'REMOVE_POLICY',
     UPDATE_POLICY:'UPDATE_POLICY'
 }
+
+/////achievement////
+export const achievementActionType={
+    ADD_ACHIEVEMENTS:'ADD_ACHIEVEMENTS',
+    REMOVE_ACHIEVEMENT:'REMOVE_ACHIEVEMENT',
+    UPDATE_ACHIEVEMENT:'UPDATE_ACHIEVEMENT'
+}
+
+////picture////
+export const pictureActionType={
+    ADD_PICTURES:'ADD_ACHIEVEMENTS',
+    REMOVE_PICTURES:'REMOVE_PICTURE'
+}

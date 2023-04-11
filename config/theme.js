@@ -15,6 +15,7 @@ const theme = createTheme({
       mode: 'light',
       primary: {
         main: '#1c2d15f2',
+        transprate:'rgba(28,45,21,0.5)'
       },
       secondary: {
         main: '#f3b40d',

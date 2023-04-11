@@ -1,7 +1,6 @@
 import Header from '@/components/header/header'
 import '@/styles/globals.css'
 import '../styles/fonts/font-awesome.min.css'
-import '../assets/ihover/ihover.css'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useEffect, useState } from 'react';
 import Head from 'next/head'

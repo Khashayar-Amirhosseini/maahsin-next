@@ -3,7 +3,7 @@ import { ExpandMore } from '@mui/icons-material';
 import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, Typography } from '@mui/material';
 import style from  './about.module.css';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { store } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import Doctrors from '../doctor/doctor';
@@ -13,6 +13,13 @@ import History from './history/history';
 import Goal from './goals/goal'
 import Policy from './policy/policy';
 import Acheivement from './acheivements/Acheivement';
+import Carousel from 'react-material-ui-carousel';
+import { addPictures } from '@/redux/action/pictureAction';
+import useSWRInfinite from 'swr'
+import axios from 'axios';
+import { date } from 'yup';
+import { isSending } from '@/redux/action/saveButtonAction';
+import Picture from './pictures/Picture';
 
 
 
@@ -23,7 +30,25 @@ const About = (props) => {
     const {Policies}=useSelector(state=>state.PolicyReducer);
     const {Acheivements}=useSelector(state=>state.AcheivementReducer);
     const {Pictures}=useSelector(state=>state.PictureReducer);
-    console.log(Acheivements);
+    const dispatch=useDispatch()
+    const {Address}=props
+    const url=`${Address}/action/guest/findAllPictures.do?`;
+    const{data,error,isLoading}=useSWRInfinite(url,axios);
+   // !isLoading&&(dispatch(addPictures(data.data)))
+    useEffect(()=>{
+        !isLoading&&(dispatch(addPictures(data.data)))  ;
+        console.log(":))");
+    },[isLoading])
+    const [screenWidth,setScreenWidth]=useState(0)
+    useEffect(() => {
+        if (typeof window != 'undefined') {
+            setScreenWidth(window.innerWidth)
+        }  
+      }, [])
+
+    console.log(screenWidth);
+
+    
     return (
         <>
             <div  className="main_title">
@@ -102,6 +127,35 @@ const About = (props) => {
                                     {Acheivements.map(achievement=><Acheivement user={User} key={uuidv4()} acheivementInfo={achievement}/>)}
                                 </ul>
                             </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion key={uuidv4()} defaultExpanded={false}>
+                        <AccordionSummary
+                        key={uuidv4()}
+                        expandIcon={<ExpandMoreIcon/>}                
+                        aria-controls="panel2a-content"
+                        id="panel1a-header">
+                            <Typography>تصاویر</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails key={uuidv4()}>
+                            <Grid container spacing={1} justifyContent={'center'} >
+                              
+                                    <Carousel sx={{marginTop:5,width:'100%',height:'70%'}} >
+                                        {Pictures.map(p=><img style={{width:'100%'}} height ={screenWidth/2}src={p.link}/>)}
+                                    </Carousel>
+                              
+                                <Grid container item >
+                                
+                                    {
+                                        Pictures.map(p=>
+                                            <Picture user={User} key={uuidv4()} pictureInfo={p}/>
+                                        )
+                                    }
+                           
+                                </Grid>
+                                
+                            </Grid>
+
                         </AccordionDetails>
                     </Accordion>        
             </Grid>

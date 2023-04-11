@@ -46,7 +46,7 @@ const Goal = (props) => {
                     <Grid container sx={{justifyContent:'center'}}>
                     <EditButton user={user}   onClick={e=>{dispatch(openModal("goal",goalInfo.id));dispatch(updateEntity(Goals));dispatch(updateFeedBack({errors:[],success:[]}));dispatch(isSending(false))}}/>
                     <AddButton user={user} onClick={e=>{handleAdd()}} />
-                    <DeleteButton user={user} entity='goal' index={goalInfo.id}  url={`/action/admin/deleteGoal.do?goalId=${goalInfo.id}`} onDelete={handleDelete}/>
+                    <DeleteButton user={user} entity={Goals} index={goalInfo.id}  url={`/action/admin/deleteGoal.do?goalId=${goalInfo.id}`} onDelete={handleDelete}/>
                     </Grid>
                 </Card>
                 

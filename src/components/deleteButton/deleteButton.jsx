@@ -2,14 +2,13 @@ import { Button, Dialog, Grid, DialogTitle,DialogContent,DialogActions,DialogCon
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { removeDoctor } from "@/redux/action/doctorAction";
 import { isSending } from "@/redux/action/saveButtonAction";
 import { updateFeedBack } from "@/redux/action/submitFeedBackAction";
 import SubmitFeedBacks from "../submitFeedbacks/SubmitFeedBacks";
 import axios from "axios";
 
 const DeleteButton = (props) => {
-    const { user, url,index,entity ,onDelete} = props;
+    const { user, url,index ,onDelete,entity} = props;
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const[isSuccessful,setIsSuccessful]=useState(false)
@@ -17,9 +16,10 @@ const DeleteButton = (props) => {
     const {IsSending}=useSelector(state=>state.SaveButtonReducer);
 
     const handleClickOpen = () => {
+        if(entity.length>1){
         setOpen(true);
         dispatch(updateFeedBack({errors:[],success:[]}))
-        dispatch(isSending(false))
+        dispatch(isSending(false))}
     };
 
     const handleClose = () => {
@@ -28,28 +28,35 @@ const DeleteButton = (props) => {
     };
     const handleAccept=async()=>{
         dispatch(isSending(true))
-        try {
-                const response = await axios({
-                    method: "get",
-                    url: `${Address}${url}`,
-                    headers: { "enctype": "multipart/form-data", 'Access-Token':`${user.token}` },
-                })
-                if(response.status==200){
-                        dispatch(isSending(false))
-                        dispatch(updateFeedBack({errors:[],success:['اطلاعات با موفقیت بارگذاری شد.']}))
-                        onDelete(index)
-                        setIsSuccessful(true) 
-                }         
+        if(index===0){
+            onDelete(index)  
+            dispatch(isSending(false))
         }
-        catch (e) {
-               if(e.response){
-                     dispatch(isSending(false))
-                   if(e.response.status===700){
-                    dispatch(updateFeedBack({errors:["دسترسی مورد نیاز فراهم نشده است."],success:[]}))
-                   }}
-                   else{
-                    dispatch(updateFeedBack({errors:["مشکل در سرور پیش اومده"],success:[]}))
-                   }
+        else{
+            try {
+                    const response = await axios({
+                        method: "get",
+                        url: `${Address}${url}`,
+                        headers: { "enctype": "multipart/form-data", 'Access-Token':`${user.token}` },
+                    })
+                    if(response.status==200){
+                            dispatch(isSending(false))
+                            dispatch(updateFeedBack({errors:[],success:['اطلاعات با موفقیت بارگذاری شد.']}))
+                            onDelete(index)
+                            setIsSuccessful(true) 
+                    }         
+            }
+            catch (e) {
+                if(e.response){
+                        dispatch(isSending(false))
+                    if(e.response.status===700){
+                        dispatch(updateFeedBack({errors:["دسترسی مورد نیاز فراهم نشده است."],success:[]}))
+                    }}
+                    else{
+                        console.log(e)
+                        dispatch(updateFeedBack({errors:["مشکل در سرور پیش اومده"],success:[]}))
+                    }
+            }
         }
         
     }

@@ -32,7 +32,7 @@ const Policy = (props) => {
                 <li style={{display:'flex'}}><ArrowLeftOutlinedIcon color="secondary"/><Typography>{policyInfo.description}</Typography>
                     <EditButton user={user}   onClick={e=>{dispatch(openModal("policy",policyInfo.id));dispatch(updateEntity(Policies));dispatch(updateFeedBack({errors:[],success:[]}));dispatch(isSending(false))}}/>
                     <AddButton user={user} onClick={e=>{handleAdd()}} />
-                    <DeleteButton user={user} entity='goal' index={policyInfo.id}  url={`/action/admin/deletePolicy.do?policyId=${policyInfo.id}`} onDelete={handleDelete}/> 
+                    <DeleteButton user={user} entity={Policies} index={policyInfo.id}  url={`/action/admin/deletePolicy.do?policyId=${policyInfo.id}`} onDelete={handleDelete}/> 
                 </li>
             )
      );

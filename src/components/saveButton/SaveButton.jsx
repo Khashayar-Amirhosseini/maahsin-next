@@ -41,7 +41,10 @@ const SaveButton = (props) => {
                 }
                 case 'acheivement':{
                     return await acheivmentSchema.validate(newObj,{abortEarly:false})
-                }  
+                } 
+                default:{
+                    return newObj
+                } 
             }
         }
         catch(error){
@@ -109,7 +112,7 @@ const SaveButton = (props) => {
     /////picture/////
     const {Pictures}=useSelector(state=>state.PictureReducer)
     /////////////////////////////
-    const saveButtonSubmitHandeler=async(e)=>{  
+    const saveButtonSubmitHandeler=async(e)=>{ 
         switch (SubmitHandler){
             case('history'):{
                return historySubmitHandler(e)
@@ -128,7 +131,6 @@ const SaveButton = (props) => {
                 if(doctors[index].id===0&& response){
                 doctors[index].id=response.id;
                 dispatch(removeDoctor(0));
-                //dispatch(addDoctors([doctors[index]));
                 dispatch(dispatch(openModal("doctor",doctors[index].id)));
                 }
                 return
@@ -144,7 +146,6 @@ const SaveButton = (props) => {
                 if(Goals[index].id===0&& response){
                 Goals[index].id=response.id;
                 dispatch(removeDoctor(0));
-                //dispatch(addDoctors([doctors[index]));
                 dispatch(dispatch(openModal("goal",Goals[index].id)))
                 } 
                 return
@@ -160,7 +161,6 @@ const SaveButton = (props) => {
                 if(Policies[index].id===0&& response){
                 Policies[index].id=response.id;
                 dispatch(removePolicy(0));
-                //dispatch(addDoctors([doctors[index]));
                 dispatch(dispatch(openModal("policy",Policies[index].id)))
                 }
                 return 
@@ -172,11 +172,10 @@ const SaveButton = (props) => {
                 dispatch(updatAcheivements(Acheivements[index]))
                 const updateUrl='/action/achievement/achievementUpdate.do?'
                 const saveUrl='/action/achievement/achievementSave.do?'
-                const response= await submitHandler(e,Policies[index],updateUrl,saveUrl)
+                const response= await submitHandler(e,Acheivements[index],updateUrl,saveUrl)
                 if(Acheivements[index].id===0&& response){
                 Acheivements[index].id=response.id;
                 dispatch(removeAcheivement(0));
-                //dispatch(addDoctors([doctors[index]));
                 dispatch(dispatch(openModal("acheivement",Acheivements[index].id)))
                 }
                 return
@@ -190,7 +189,6 @@ const SaveButton = (props) => {
                 if(Pictures[index].id===0&& response){
                 Pictures[index].id=response.id;
                 dispatch(removePicture(0));
-                //dispatch(addDoctors([doctors[index]));
                 dispatch(dispatch(openModal("picture",Pictures[index].id)))}
                 return
             }
@@ -201,7 +199,6 @@ const SaveButton = (props) => {
         const result = await validate(object);
         const formData = new FormData;
         if (result&&IsChanged) {
-            console.log(object);
             dispatch(isSending(true))
             for (const i in object){
             formData.append(i, result[i]);

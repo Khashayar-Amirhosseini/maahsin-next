@@ -55,7 +55,7 @@ const Doctrors = (props) => {
                 <Grid container >
                     <EditButton user={user} onClick={e=>{dispatch(openModal("doctor",doctorInfo.id));dispatch(updateEntity(doctors));dispatch(updateFeedBack({errors:[],success:[]}));dispatch(isSending(false))}} />
                     <AddButton user={user} onClick={e=>{handleAdd()}} />
-                    <DeleteButton user={user} entity='doctor' index={doctorInfo.id}  url={`/action/admin/deleteDoctor.do?doctorId=${doctorInfo.id}`} onDelete={handleDelete}/>
+                    <DeleteButton user={user} entity={doctors} index={doctorInfo.id}  url={`/action/admin/deleteDoctor.do?doctorId=${doctorInfo.id}`} onDelete={handleDelete}/>
                 </Grid>
             </Grid>
         </Grid>)}

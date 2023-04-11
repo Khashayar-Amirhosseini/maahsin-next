@@ -5,7 +5,6 @@ const DoctorInitialState={
 const DoctorReducer=(state=DoctorInitialState,action)=>{
     switch (action.type){
         case doctorActionTypes.ADD_DOCTORS:{
-            
             const newState={...state,doctors:[...state.doctors].concat(action.doctors)}
             return newState;
         }

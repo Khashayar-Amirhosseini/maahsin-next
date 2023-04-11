@@ -62,6 +62,19 @@ export const achievementActionType={
 
 ////picture////
 export const pictureActionType={
-    ADD_PICTURES:'ADD_ACHIEVEMENTS',
+    ADD_PICTURES:'ADD_PICTURES',
     REMOVE_PICTURES:'REMOVE_PICTURE'
+}
+
+///services////
+export const serviceActionTypes={
+    ADD_SERVICES:'ADD_SERVICES',
+    UPDATE_SERVICE:'UPDATE_SERVICE',
+    REMOVE_SERVICE:'REMOVE_SERVICE'
+}
+///cluster///
+export const clusterActionTypes={
+    ADD_CLUSTERS:'ADD_CLUSTERS',
+    UPDATE_CLUSTER:'UPDATE_CLUSTER',
+    REMOVE_CLUSTER:'REMOVE_CLUSTER'
 }

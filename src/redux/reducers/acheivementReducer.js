@@ -1,12 +1,11 @@
 import { achievementActionType } from "../types";
 
-export const acheivementInitialState={
+const acheivementInitialState={
     Acheivements:[]
 }
 const AcheivementReducer = (state=acheivementInitialState,action) => {
-    switch (action){
+    switch (action.type){
         case achievementActionType.ADD_ACHIEVEMENTS:{
-            console.log(action.acheivements);
             return{...state,Acheivements:[...state.Acheivements].concat(action.acheivements)}
         }
         case achievementActionType.UPDATE_ACHIEVEMENT:{
@@ -15,6 +14,7 @@ const AcheivementReducer = (state=acheivementInitialState,action) => {
         }
         case achievementActionType.REMOVE_ACHIEVEMENT:{
             const newAcheivements=[...state.Acheivements].filter(a=>a.id!==action.index);
+            return{...state,Acheivements:newAcheivements}
         }
         default:{
             return state

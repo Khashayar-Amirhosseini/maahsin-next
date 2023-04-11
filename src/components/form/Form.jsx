@@ -8,8 +8,8 @@ import { v4 as uuidv4 } from 'uuid';
 const Form = (props) => {
     const {object,changeObj}=props;
     const [newObject, setNewObject] = useState(object);
-    const [selectedFile, setSelectedFile] = useState(object.image);
-    const [image,setImage]=useState(object.image)
+    const [selectedFile, setSelectedFile] = useState(object.image?object.image:object.link);
+    const [image,setImage]=useState(object.image?object.image:object.link)
     const dispatch = useDispatch();
     const checked = (object.state === 'active') ? true : false;
     const properties=['name','family','medicalId','about','description']
@@ -21,11 +21,14 @@ const Form = (props) => {
             updatedObject['state'] = (updatedObject.state === 'active') ? 'disactive' : 'active'
         }
         if(e.target.name==='file'){
-            console.log(e);
             setSelectedFile(e.target.files[0])
             setImage(URL.createObjectURL(e.target.files[0]))
-            console.log(image);
-            updatedObject.image=URL.createObjectURL(e.target.files[0]);
+            if(Object.hasOwn(updatedObject, "image")){
+                updatedObject.image=URL.createObjectURL(e.target.files[0]);
+            }
+            else{
+                updatedObject.link=URL.createObjectURL(e.target.files[0]);
+            }
             updatedObject.file=e.target.files[0];
         }
         else {
@@ -64,7 +67,7 @@ const Form = (props) => {
                 <Switch defaultChecked={checked} name="state" onChange={onChangeHandler} />
             </Grid>
 
-            {Object.hasOwn(object, "image")&&(
+            {Object.hasOwn(object, "image")||Object.hasOwn(object, "link")&&(
             <Grid container item md={4} style={{padding:'10px'}}>
                 <Grid container sx={{flexDirection:'column',alignItems:'center'}}  >
                 <img src={image} style={{width:200,height:200}}/>

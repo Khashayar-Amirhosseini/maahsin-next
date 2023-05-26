@@ -10,8 +10,7 @@ const GoalReducer = (state=goalInitialState,action) => {
         }
         case goalsActoinType.UPDATE_GOAL:{
             const newGoal=[...state.Goals].filter(g=>g.id!==action.goal.id)
-            newGoal.concat(action.goal)
-            return{...state,Goals:newGoal}
+            return{...state,Goals:newGoal.concat(action.goal)}
         }
         case goalsActoinType.REMOVE_GOAL:{
             const newGoals=[...state.Goals].filter(g=>g.id!==action.index)

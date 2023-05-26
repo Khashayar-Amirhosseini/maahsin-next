@@ -14,13 +14,15 @@ const DeleteButton = (props) => {
     const[isSuccessful,setIsSuccessful]=useState(false)
     const {Address}=useSelector(state=>state.AddressReducer);
     const {IsSending}=useSelector(state=>state.SaveButtonReducer);
-
     const handleClickOpen = () => {
         if(entity.length>1){
         setOpen(true);
         dispatch(updateFeedBack({errors:[],success:[]}))
         dispatch(isSending(false))}
+        
     };
+    
+    
 
     const handleClose = () => {
         setOpen(false);
@@ -47,13 +49,13 @@ const DeleteButton = (props) => {
                     }         
             }
             catch (e) {
+                console.log(e);
                 if(e.response){
                         dispatch(isSending(false))
                     if(e.response.status===700){
                         dispatch(updateFeedBack({errors:["دسترسی مورد نیاز فراهم نشده است."],success:[]}))
                     }}
                     else{
-                        console.log(e)
                         dispatch(updateFeedBack({errors:["مشکل در سرور پیش اومده"],success:[]}))
                     }
             }

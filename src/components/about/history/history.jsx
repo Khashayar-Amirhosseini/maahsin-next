@@ -14,6 +14,7 @@ import EditModal from "../../editModal/EditModal";
 import { openModal } from "@/redux/action/editModelAction";
 import { isChanged, isSending } from "@/redux/action/saveButtonAction";
 import { update, updateFeedBack } from "@/redux/action/submitFeedBackAction";
+import { updateEntity } from "@/redux/action/entityAction";
 
 const History = () => {  
     const {Address}=useSelector(state=>state.AddressReducer);
@@ -33,13 +34,19 @@ const History = () => {
         onChange={e=> onChangeHandler(e)}
     />
     const submitHandler='history'
+    const handleEdit=()=>{
+        dispatch(updateEntity(HistoryInf))
+        dispatch(updateFeedBack({errors:[],success:[]}));
+        dispatch(isSending(false))
+        dispatch(openModal("history",HistoryInf[0].id));
+    }
     return ( 
         <>
         <Grid container>
             <Grid item textAlign={'justify'}>
-                <Typography>{HistoryInf.description}</Typography>
+                <Typography>{HistoryInf[0].description}</Typography>
             </Grid>
-            <EditButton user={User} onClick={e=>{dispatch(openModal(submitHandler));dispatch(updateFeedBack({errors:[],success:[]}));dispatch(isSending(false))}}/>
+            <EditButton user={User}  onClick={e=>handleEdit()}/>
         </Grid>
       
         </>

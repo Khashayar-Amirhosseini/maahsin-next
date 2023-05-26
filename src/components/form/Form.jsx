@@ -12,7 +12,7 @@ const Form = (props) => {
     const [image,setImage]=useState(object.image?object.image:object.link)
     const dispatch = useDispatch();
     const checked = (object.state === 'active') ? true : false;
-    const properties=['name','family','medicalId','about','description']
+    const properties=['name','family','medicalId','about','title','description']
     const onChangeHandler = (e) => {
         e.preventDefault
         dispatch(isChanged(true))
@@ -44,9 +44,10 @@ const Form = (props) => {
     PersianLabales.set('medicalId','شماره نظام پزشکی');
     PersianLabales.set('about','درباره');
     PersianLabales.set('description','شرح');
+    PersianLabales.set('title','عنوان')
     return (
         <Grid container >
-            <Grid container item md={8} sx={{ justifyContent: 'space-between' }}>
+            <Grid container item md={8} >
                 {properties.map(p=>{
                     return(
                         (object[p]||object[p]==='')&&(<TextField key={uuidv4()} required
@@ -57,26 +58,27 @@ const Form = (props) => {
                             name={p}
                             margin="normal"
                             onChange={onChangeHandler}
-                            multiline={p.indexOf("about")>-1}
-                            rows={p.indexOf("about")>-1?4:1}
-                            fullWidth={p.indexOf("about")>-1}
-
+                            multiline={(p.indexOf("about")>-1||p.indexOf("description")>-1)}
+                            rows={(p.indexOf("about")>-1||p.indexOf("description")>-1)?4:1}
+                            fullWidth={true}
                     />
                     ))
                 })}
                 <Switch defaultChecked={checked} name="state" onChange={onChangeHandler} />
             </Grid>
-
-            {Object.hasOwn(object, "image")||Object.hasOwn(object, "link")&&(
+            {(Object.hasOwn(object, "image")||Object.hasOwn(object, "link"))&&
+            (
             <Grid container item md={4} style={{padding:'10px'}}>
-                <Grid container sx={{flexDirection:'column',alignItems:'center'}}  >
-                <img src={image} style={{width:200,height:200}}/>
-                <IconButton color="primary" aria-label="upload picture" component="label">
-                    <input name="file" encType="multipart/form-data" hidden accept="image/*" type="file" onChange={onChangeHandler} />
-                    <PhotoCamera/>
-                </IconButton>
-        </Grid>
-            </Grid>)}
+                <Grid container sx={{flexDirection:'column',alignItems:'center'}}>
+                    <img src={image} style={{width:200,height:200}}/>
+                    <IconButton color="primary" aria-label="upload picture" component="label">
+                        <input name="file" encType="multipart/form-data" hidden accept="image/*" type="file" onChange={onChangeHandler} />
+                        <PhotoCamera/>
+                    </IconButton>
+                </Grid>
+            </Grid>
+            )
+            }
         </Grid>
      );
 }

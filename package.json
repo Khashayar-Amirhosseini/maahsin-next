@@ -26,6 +26,8 @@
     "react-loading-skeleton": "^3.1.0",
     "react-material-ui-carousel": "^3.4.2",
     "react-redux": "^8.0.5",
+    "react-snap-carousel": "^0.3.1",
+    "react-touch-carousel": "^0.10.2",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.2",

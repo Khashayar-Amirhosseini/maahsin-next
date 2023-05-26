@@ -17,7 +17,7 @@ export default function Home(props) {
   return (
     <header dir="rtl">
       <About Address={Address}/>
-      <Servicees/>
+      <Servicees />
     </header>
   )
 }
@@ -29,5 +29,6 @@ export const getServerSideProps= wrapper.getServerSideProps((store)=> async()=>{
   await axios.get(`${Address}/action/guest/findAllPolicies.do?`).then(res=>store.dispatch(addPolicy(res.data)))
   await axios.get(`${Address}/action/guest/findAllAchievement.do?`).then(res=>store.dispatch(addAcheivements(res.data)))
   await axios.get(`${Address}/action/guest/findAllMainServices.do?`).then(res=>store.dispatch(addClusters(res.data)))
+  await axios.get(`${Address}/action/guest/findAllServices.do?`).then(res=>store.dispatch(addServices(res.data)))
 })
 

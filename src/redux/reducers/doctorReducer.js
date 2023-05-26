@@ -14,8 +14,7 @@ const DoctorReducer=(state=DoctorInitialState,action)=>{
         }
         case doctorActionTypes.UPDATE_DOCTOR:{
             const newDoctor=[...state.doctors].filter(d=>d.id!==action.doctor.id)
-            newDoctor.concat(action.doctor)
-            return{...state,doctors:newDoctor}
+            return{...state,doctors:newDoctor.concat(action.doctor)}
         }
         default:{
             return state;

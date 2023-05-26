@@ -5,7 +5,7 @@ import style from  './about.module.css';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useEffect, useState } from 'react';
 import { store } from '@/redux/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import Doctrors from '../doctor/doctor';
 import { addDoctors } from '@/redux/types';
 import { v4 as uuidv4 } from 'uuid';
@@ -24,8 +24,9 @@ import Picture from './pictures/Picture';
 
 
 const About = (props) => {
+    const store=useStore()
     const {doctors}=useSelector((state)=>state.DoctorReducer);
-    const {Goals}=useSelector(state=>state.GoalReducer);
+    const {Goals}=useSelector((state)=>state.GoalReducer)
     const {User}=useSelector(state=>state.UserReducer);
     const {Policies}=useSelector(state=>state.PolicyReducer);
     const {Acheivements}=useSelector(state=>state.AcheivementReducer);
@@ -37,18 +38,13 @@ const About = (props) => {
    // !isLoading&&(dispatch(addPictures(data.data)))
     useEffect(()=>{
         !isLoading&&(dispatch(addPictures(data.data)))  ;
-        console.log(":))");
     },[isLoading])
     const [screenWidth,setScreenWidth]=useState(0)
     useEffect(() => {
         if (typeof window != 'undefined') {
             setScreenWidth(window.innerWidth)
         }  
-      }, [])
-
-    console.log(screenWidth);
-
-    
+      }, [])    
     return (
         <>
             <div  className="main_title">
@@ -141,9 +137,8 @@ const About = (props) => {
                             <Grid container spacing={1} justifyContent={'center'} >
                               
                                     <Carousel sx={{marginTop:5,width:'100%',height:'70%'}} >
-                                        {Pictures.map(p=><img style={{width:'100%'}} height ={screenWidth/2}src={p.link}/>)}
+                                        {Pictures.map(p=><img key={uuidv4()} style={{width:'100%'}} height ={screenWidth/2}src={p.link}/>)}
                                     </Carousel>
-                              
                                 <Grid container item >
                                 
                                     {

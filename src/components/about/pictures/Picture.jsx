@@ -9,6 +9,7 @@ import { updateFeedBack } from "@/redux/action/submitFeedBackAction";
 import { Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import image from './../../../assets/img/image.png';
+import { v4 as uuidv4 } from 'uuid';
 
 const Picture = (props) => {
 
@@ -31,13 +32,13 @@ const Picture = (props) => {
 
     return (
             (user.userInf.viewer)&&(
-                    <Grid style={{padding:10}} item md={3}>
-                        <Grid container item >
+                    <Grid key={uuidv4()} style={{padding:10}} item md={3}>
+                        <Grid key={uuidv4()} container item >
                             <img style={{width:'100%',height:250}} src={pictureInfo.link} />
                         </Grid>
-                        <Grid container item justifyContent={'center'}>
-                            <AddButton user={user} onClick={e=>{handleAdd()}} />
-                            <DeleteButton user={user} index={pictureInfo.id} entity={Pictures} url={`/action/admin/deletePicture.do?pictureId=${pictureInfo.id}`} onDelete={handleDelete}/> 
+                        <Grid key={uuidv4()} container item justifyContent={'center'}>
+                            <AddButton key={uuidv4()} user={user} onClick={e=>{handleAdd()}} />
+                            <DeleteButton key={uuidv4()} user={user} index={pictureInfo.id} entity={Pictures} url={`/action/admin/deletePicture.do?pictureId=${pictureInfo.id}`} onDelete={handleDelete}/> 
                         </Grid>
                     </Grid>
  

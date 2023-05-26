@@ -12,28 +12,24 @@ import HistoryForm from "../about/history/HistoryForm";
 import Form from "../form/Form";
 import SaveButton from "../saveButton/SaveButton";
 import SubmitFeedBacks from "../submitFeedbacks/SubmitFeedBacks";
+import { updateSubService } from "@/redux/action/clusterAction";
 
 const { Children, useState } = require("react");
 
 const EditModal = (props) => {
     const { Open, SubmitHandler, Index } = useSelector(state => state.EditModalReducer)
-    const { HistoryInf } = useSelector((state) => state.HistoryReducer)
-    const {Entity}=useSelector(state=>state.EntityReducer)
+    const {Entity}=useSelector(state=>state.EntityReducer);
     const dispatch = useDispatch();
-    const handleClose = () => { dispatch(closeModal()); dispatch(updateFeedBack({ errors: [], success: [] })) }
-  
+    const handleClose = () => {
+         dispatch(closeModal()); 
+         dispatch(updateFeedBack({ errors: [], success: [] }));
+        }
     const obj=Entity.filter(e=>e.id===Index)[0];
-    const [newObj,setNewObj]=useState(obj)
+
+    const [newObj,setNewObj]=useState(obj);
     const changeObj=(obj)=>{
         setNewObj(obj)
     }
-    const[logInfo,setLogInfo] =useState({user:"",date:""} )
-
-    useEffect(()=>{
-        SubmitHandler==='history'?setLogInfo({ user: HistoryInf.user.family, date: new Date((HistoryInf.date)).toLocaleDateString('fa-IR') }):
-        setLogInfo({user: obj.user.family, date: new Date((obj.date)).toLocaleDateString('fa-IR')});
-    },[SubmitHandler])
-    
     return (
         <Dialog
             open={Open}
@@ -48,18 +44,23 @@ const EditModal = (props) => {
                     <Grid sx={{ width: '100%' }} item>
                         <FormControl sx={{ width: '100%' }}>
                             <Form object={obj} changeObj={changeObj}/>
-                            {SubmitHandler === 'history' && (<HistoryForm />)}
                         </FormControl>
                         <Grid container style={{flexDirection:'column',alignContent:'center'}}>
-                        <Typography textAlign={"center"} color={theme.palette.success.main}>{logInfo.user}</Typography>
-                        <Typography textAlign={"center"}  color={theme.palette.success.main}>({logInfo.date}) </Typography>
+                        <Typography textAlign={"center"} color={theme.palette.success.main}>{obj.user.family}</Typography>
+                        <Typography textAlign={"center"}  color={theme.palette.success.main}> ({(new Date(obj.date)).toLocaleDateString('fa-IR')}) </Typography>
                         </Grid>
                     </Grid>
-                    <SubmitFeedBacks/>
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <SaveButton newObj={newObj ? newObj : obj} />
+                <Grid container>
+                    <Grid container spacing={2} width={'100%'}>
+                        <SubmitFeedBacks/>
+                    </Grid>
+                    <Grid container spacing={2} width={'100%'}>
+                        <SaveButton newObj={newObj ? newObj : obj} />
+                    </Grid>
+                </Grid>
             </DialogActions>
         </Dialog>
     )

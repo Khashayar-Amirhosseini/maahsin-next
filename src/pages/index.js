@@ -1,8 +1,10 @@
 import About from "@/components/about/about";
+import Fasilities from "@/components/fasilities/fasilities";
 import Servicees from "@/components/sevices/Services";
 import { addAcheivements } from "@/redux/action/achievementAction";
 import { addClusters } from "@/redux/action/clusterAction";
 import { addDoctors } from "@/redux/action/doctorAction";
+import { addFasilities } from "@/redux/action/fasilityAction";
 import { addGoals } from "@/redux/action/goalAction";
 import { updateHistory } from "@/redux/action/HistoryAction";
 import { addPictures } from "@/redux/action/pictureAction";
@@ -18,6 +20,7 @@ export default function Home(props) {
     <header dir="rtl">
       <About Address={Address}/>
       <Servicees />
+      <Fasilities/>
     </header>
   )
 }
@@ -30,5 +33,6 @@ export const getServerSideProps= wrapper.getServerSideProps((store)=> async()=>{
   await axios.get(`${Address}/action/guest/findAllAchievement.do?`).then(res=>store.dispatch(addAcheivements(res.data)))
   await axios.get(`${Address}/action/guest/findAllMainServices.do?`).then(res=>store.dispatch(addClusters(res.data)))
   await axios.get(`${Address}/action/guest/findAllServices.do?`).then(res=>store.dispatch(addServices(res.data)))
+  await axios.get(`${Address}/action/guest/findAllFacilities.do?`).then(res=>store.dispatch(addFasilities(res.data)))
 })
 

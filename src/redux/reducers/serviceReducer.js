@@ -9,13 +9,11 @@ const ServiceReducer=(state=ServiceInitialState,action)=>{
             return newState;
         }
         case serviceActionTypes.REMOVE_SERVICE:{
-            const newService=[...state.Services].filter(d=>d.id!==action.index)
+            const newService=[...state.Services].filter(d=>d.id!==action.index);
             return {...state,Services:newService}
         }
         case serviceActionTypes.UPDATE_SERVICE:{
-            console.log(action.service);
             const newService=[...state.Services].filter(d=>d.id!==action.service.id)
-            console.log(newService.concat(action.service));
             return{...state,Services:[...new Set(newService.concat(action.service))]}
         }
         default:{

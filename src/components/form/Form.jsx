@@ -12,7 +12,7 @@ const Form = (props) => {
     const [image,setImage]=useState(object.image?object.image:object.link)
     const dispatch = useDispatch();
     const checked = (object.state === 'active') ? true : false;
-    const properties=['name','family','medicalId','about','title','description']
+    const properties=['name','family','medicalId','about','title','description','utility']
     const onChangeHandler = (e) => {
         e.preventDefault
         dispatch(isChanged(true))
@@ -44,7 +44,8 @@ const Form = (props) => {
     PersianLabales.set('medicalId','شماره نظام پزشکی');
     PersianLabales.set('about','درباره');
     PersianLabales.set('description','شرح');
-    PersianLabales.set('title','عنوان')
+    PersianLabales.set('title','عنوان');
+    PersianLabales.set('utility','قابلیت کلیدی تجهیز');
     return (
         <Grid container >
             <Grid container item md={8} >

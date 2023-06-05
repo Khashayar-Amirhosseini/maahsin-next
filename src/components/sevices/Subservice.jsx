@@ -19,6 +19,8 @@ import serviceImage from "../../assets/img/image.png"
 import { useEffect } from 'react';
 import { addSubServices, updateCluster } from '@/redux/action/clusterAction';
 import ServiceReducer from '@/redux/reducers/serviceReducer';
+import ReadMore from '../article/readMore';
+
 
 const Subservice = (props) => {
     const {serviceId,user,mainService}=props;
@@ -61,9 +63,11 @@ const Subservice = (props) => {
                 <Typography gutterBottom variant="h5" component="div">
                 {serviceInfo.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <ReadMore>
+                <Typography variant="body2" color="text.secondary" textAlign={'justify'}>
                 {serviceInfo.description}
                 </Typography>
+                </ReadMore>
             </CardContent>
             <CardActions>
                 <Button size="small">اشتراک</Button>

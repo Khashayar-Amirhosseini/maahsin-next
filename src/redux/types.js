@@ -81,3 +81,10 @@ export const clusterActionTypes={
     UPDATE_SUB_SERVICE:'UPDATE_SUB_SERVICE',
     REMOVE_SUB_SERVICE:'REMOVE_SUB_SERVICE'
 }
+
+////fasility////
+export const fasilityActionTypes={
+    ADD_FASILITIES:'ADD_FASILITIES',
+    UPDATE_FASILITY:'UPDATE_FASILITY',
+    REMOVE_FASILITY:'REMOVE_FASILITY'
+}

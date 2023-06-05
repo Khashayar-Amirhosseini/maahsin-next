@@ -18,6 +18,7 @@ import { addServices, removeService, updateService } from "@/redux/action/servic
 import { resolve } from "styled-jsx/css";
 import { updateEntity } from "@/redux/action/entityAction";
 import {useStore } from 'react-redux'
+import { removeFasility, updateFasility } from "@/redux/action/fasilityAction";
 
 
 
@@ -54,6 +55,9 @@ const SaveButton = (props) => {
                 } 
                 case 'service':{
                     return await serviceSchema.validate(object,{abortEarly:false})
+                }
+                case 'fasility':{
+                    return await fasilitySchema.validate(object,{abortEarly:false})
                 }
                 default:{
                     return newObj
@@ -107,8 +111,14 @@ const SaveButton = (props) => {
     const {Services}=useSelector(state=>state.ServiceReducer);
     let serviceSchema = yup.object().shape({
         title: yup.string().required('فیلد عنوان خدمت اصلی را نباید خالی بزاری.'),
-        description: yup.string().required('راجب خدمت باید یکم توضیحات بنویسی'),
-        mainServiceId:yup.string().required('کداصلی')
+        description: yup.string().required('راجب خدمت باید یکم توضیحات بنویسی')
+    })
+    //////fasility/////
+    const {Fasilities}=useSelector(state=>state.FasilityReducer);
+    let fasilitySchema = yup.object().shape({
+        name: yup.string().required('فیلد نام تجهیز را نباید خالی بزاری.'),
+        utility: yup.string().required('قابلیت کلیدی تجهیز را بنویس'),
+        description:yup.string().required('راجب تجهیزباید یکم توضیحات بنویسی'),
     })
     /////////////////////////////
     const saveButtonSubmitHandeler=async(e)=>{ 
@@ -241,6 +251,20 @@ const SaveButton = (props) => {
                     const newCluster2={...Cluster,services:Cluster.services.filter(s=>s.id!==0)}
                     dispatch(updateCluster(newCluster2))
                     dispatch(dispatch(openModal("service",newObj.id)))
+                }
+                return
+            }
+            case 'fasility':{
+                dispatch(updateFasility(newObj));
+                const updateUrl='/action/facility/updateFacility.do?'
+                const saveUrl='/action/facility/saveFacility.do?'
+                const response= await submitHandler(e,newObj,updateUrl,saveUrl)
+                if(newObj.id===0&& response){
+                    newObj.id=response.id;
+                    newObj.user=response.user;
+                    newObj.date=response.date;
+                    dispatch(removeFasility(0));
+                    dispatch(dispatch(openModal("fasility",response.id)))
                 }
                 return
             }

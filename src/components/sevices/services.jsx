@@ -27,13 +27,13 @@ const Servicees = (props) => {
             {Clusters.map(c=>{
                 return (
                     c.id!==0&&(
-                    <Grid container marginTop={5}> 
-                    <Typography variant="h4">{c.title}</Typography> 
-                    <Grid container spacing={0.5} >          
+                    <Grid key={uuidv4()}  container marginTop={5}> 
+                    <Typography key={uuidv4()}  variant="h4">{c.title}</Typography> 
+                    <Grid key={uuidv4()}  container spacing={0.5} >          
                         {c.services.map(s=>{
                             return(
-                                <Grid item md={4}  sm={6} xs={12}>
-                                    <Subservice serviceId={s.id} mainService={c} user={User}/>
+                                <Grid key={uuidv4()}  item md={4}  sm={6} xs={12}>
+                                    <Subservice key={uuidv4()}  serviceId={s.id} mainService={c} user={User}/>
                                 </Grid>
                             )
                         })}
